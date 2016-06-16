@@ -19,7 +19,7 @@
     <navbar></navbar>
     <div id="main" ui-view></div>
 <div class='gameContainer' ng-controller='WordGameController'>
-    <div ng-game-board cols='8' rows='8' ng-model='gameBoard'></div>
+    <div ng-game-board cols='4' rows='4' ng-model='gameBoard'></div>
     <ul>
         <li>{{ activePlayer().name }} it's your move </li>
         <li ng-repeat='player in players'>

@@ -13,15 +13,15 @@ app.controller("WordGameController", function($scope, Socket){
     })
   })
 
-  $scope.processClick = function(cell){
-    if(processSideEffects(cell)){
-      $scope.placeToken(cell);
-      $scope.passPlay()
-      $scope.activePlayer().addPoints(1)
-      checkGameCompletion();
-    }
-    // game logic for check word
-  }
+  // $scope.processClick = function(cell){
+  //   if(processSideEffects(cell)){
+  //     $scope.placeToken(cell);
+  //     $scope.passPlay()
+  //     $scope.activePlayer().addPoints(1)
+  //     checkGameCompletion();
+  //   }
+  //   // game logic for check word
+  // }
 
   $scope.newGame = function(){
     //set token fo defaults
