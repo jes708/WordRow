@@ -3,7 +3,6 @@ body{
   background-color: orange;
 }
 
-
 .gameContainer{
   border: 5px solid;
   display: block;
@@ -15,8 +14,8 @@ body{
 
 .gameCell{
   border: 1px solid;
-  background-color: green;
-  width: 60px;
+  background-color: white;
+  width: 192px;
   height: 60px;
   float: left;
   cursor: pointer;
