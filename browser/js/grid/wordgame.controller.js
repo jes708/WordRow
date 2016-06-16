@@ -1,5 +1,17 @@
-app.controller("WordGameController", function($scope){
+app.controller("WordGameController", function($scope, Socket){
   GridGameHelp.ScopeDecorator($scope);
+
+  $scope.players = []
+
+  Socket.on('connect', function(){
+    Socket.emit('newPlayer', window.location.pathname)
+
+    Socket.on('newPlayer', function(data){
+      console.log('i hit here')
+      $scope.players.push(data)
+      console.log($scope.players)
+    })
+  })
 
   $scope.processClick = function(cell){
     if(processSideEffects(cell)){
@@ -21,54 +33,15 @@ app.controller("WordGameController", function($scope){
     $scope.activePlayerId = $scope.firstPlayer.id
     // $scope.getCell(3,3).player = $scope.activePlayer()
     // $scope.getCell(4,3).player = $scope.nextPlayer()
-    // $scope.getCell(3,4).player = $scope.nextPlayer()
-    // $scope.getCell(4,4).player = $scope.activePlayer()
 
     //reset game
     //activePlayer & nextPlayer 2 players
   }
 
-  //***
-  //private members
-  //***
   var checkGameCompletion = function(){
     var maxPlays = $scope.boardWidth * $scope.boardHeight;
     if($scope.turns >= maxPlays){
       $scope.gameStatus = 'complete'
-    }
-  }
-
-  //perform all flanking flip operations for this cell
-  //return true if anything was processed
-  var processSideEffects = function(cell){
-    var results = []
-    var directions = GridGameHelp.Directions()
-    for(var direction in directions ){
-      results.push(walkDirection(cell, directions[direction], []));
-    }
-    return (results.indexOf(true) > -1)
-  }
-
-  var walkDirection = function(cell,direction,cellStack){
-    var next   = $scope.getCell( (cell.x + direction.x), (cell.y + direction.y) )
-    var actionApplied = false;
-    if(next && next.tokenIs($scope.activePlayer().token)){
-      flipCells(cellStack);
-      actionApplied = (cellStack.length > 0)
-    }else if(next && next.tokenIs($scope.nextPlayer().token)){
-      cellStack.push(next);
-      actionApplied = walkDirection(next,direction,cellStack);
-    }else if(next == undefined || next.player == undefined){
-      cellStack = [];
-    }
-    return actionApplied;
-  }
-
-  var flipCells = function(cellStack){
-    for(var cell in cellStack){
-      cellStack[cell].player = $scope.activePlayer()
-      $scope.activePlayer().addPoints(1)
-      $scope.nextPlayer().addPoints(-1)
     }
   }
 
