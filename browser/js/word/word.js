@@ -12,6 +12,16 @@ app.controller('WordCtrl', function ($scope, WordFactory) {
 
   $scope.pot = [];
 
+  $scope.createPot = WordFactory.createPot
+
+  $scope.verify = WordFactory.verify;
+
+});
+
+app.factory('WordFactory', function ($http) {
+
+  var WordFactory = {};
+
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
   var vowels = 'aeiou';
   var consonants = 'bcdfghjklmnpqrstvwxyz';
@@ -61,33 +71,25 @@ app.controller('WordCtrl', function ($scope, WordFactory) {
     return pot.filter(letter => common.indexOf(letter) === -1).length;
   }
 
-  $scope.createPot = function() {
+  WordFactory.submitWord = function(word) {
+    return $http.post('/api/words/', word);
+  };
+
+  WordFactory.createPot = function(pot) {
     var letter;
 
-    while ($scope.pot.length < 6) {
-      if (uncommonCount($scope.pot) >= 2) {
-        if (vowelCount($scope.pot) < 2) $scope.pot.push(commonVowel());
-        else if (consonantCount($scope.pot) < 2) $scope.pot.push(commonConsonant());
-        else $scope.pot.push(commonLetter());
+    while (pot.length < 6) {
+      if (uncommonCount(pot) >= 2) {
+        if (vowelCount(pot) < 2) pot.push(commonVowel());
+        else if (consonantCount(pot) < 2) pot.push(commonConsonant());
+        else pot.push(commonLetter());
       } else {
-        if (vowelCount($scope.pot) < 2) $scope.pot.push(randVowel());
-        else if (consonantCount($scope.pot) < 2) $scope.pot.push(randConsonant());
-        else $scope.pot.push(randLetter());
+        if (vowelCount(pot) < 2) pot.push(randVowel());
+        else if (consonantCount(pot) < 2) pot.push(randConsonant());
+        else pot.push(randLetter());
       }
     }
     // $scope.pot = pot;
-  };
-
-  $scope.verify = WordFactory.verify;
-
-});
-
-app.factory('WordFactory', function ($http) {
-
-  var WordFactory = {};
-
-  WordFactory.submitWord = function(word) {
-    return $http.post('/api/words/', word);
   };
   
   WordFactory.verify = function(pot, word, steal) {
