@@ -61,41 +61,57 @@ app.controller('WordCtrl', function ($scope, WordFactory) {
     return pot.filter(letter => common.indexOf(letter) === -1).length;
   }
 
-  $scope.createPot = function(pot) {
+  $scope.createPot = function() {
     var letter;
 
-    while (pot.length < 6) {
-      if (uncommonCount(pot) >= 2) {
-        if (vowelCount(pot) < 2) pot.push(commonVowel());
-        else if (consonantCount(pot) < 2) pot.push(commonConsonant());
-        else pot.push(commonLetter());
+    while ($scope.pot.length < 6) {
+      if (uncommonCount($scope.pot) >= 2) {
+        if (vowelCount($scope.pot) < 2) $scope.pot.push(commonVowel());
+        else if (consonantCount($scope.pot) < 2) $scope.pot.push(commonConsonant());
+        else $scope.pot.push(commonLetter());
       } else {
-        if (vowelCount(pot) < 2) pot.push(randVowel());
-        else if (consonantCount(pot) < 2) pot.push(randConsonant());
-        else pot.push(randLetter());
+        if (vowelCount($scope.pot) < 2) $scope.pot.push(randVowel());
+        else if (consonantCount($scope.pot) < 2) $scope.pot.push(randConsonant());
+        else $scope.pot.push(randLetter());
       }
     }
-    $scope.pot = pot;
+    // $scope.pot = pot;
   };
 
-})
+  $scope.verify = WordFactory.verify;
+
+});
 
 app.factory('WordFactory', function ($http) {
 
   var WordFactory = {};
 
-
-
-
   WordFactory.submitWord = function(word) {
-    return $http.post('/api/words/', word)
-    // .then(function(response) {
-    //   return response.data;
-    // });
+    return $http.post('/api/words/', word);
   };
-
   
+  WordFactory.verify = function(pot, word, steal) {
+    steal = steal || "";
+    var potCopy = pot.slice();
 
+    var validLetters = (steal.split("") + potCopy.sort());
+    var sortedWord = word.split("").sort();
+    var i = 0;
+    var j = 0;
+
+    while (i < validLetters.length && j < sortedWord.length) {
+      if (validLetters[i] === sortedWord[j]) {
+        j++
+        if (j >= sortedWord.length ) {
+          console.log('yes')
+          return true;
+        }
+      }
+      i++
+    }
+    console.log('no')
+    return false
+  };
 
 
   return WordFactory;
