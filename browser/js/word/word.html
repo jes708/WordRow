@@ -1,0 +1,9 @@
+<section id="word" ng-submit="verify(pot, word)">
+    <form name="anagram">
+    <input type="text" ng-model="word"/>
+    <button type="submit"></button>
+    </form>
+
+    <p ng-repeat="letter in pot track by $index">{{letter}}</p>
+    <button ng-click="createPot(pot)">DRAW</button>
+</section>
