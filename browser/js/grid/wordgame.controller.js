@@ -1,7 +1,7 @@
 app.controller("WordGameController", function($scope, Socket){
   GridGameHelp.ScopeDecorator($scope);
 
-  $scope.players = []
+  // $scope.players = []
 
   Socket.on('connect', function(){
     Socket.emit('newPlayer', window.location.pathname)

@@ -15,6 +15,10 @@ module.exports = function(server) {
         console.log('connected: ', socket.id)
         socket.emit('anything', { data: 'ok' })
 
+        socket.on('newPlayer', function(data) {
+          socket.emit('newPlayer', data)
+        })
+
         socket.on('disconnect', function() {
             console.log('Client disconnected.');
         });
