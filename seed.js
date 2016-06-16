@@ -46,24 +46,13 @@ var seedUsers = function () {
 };
 
 
-var seedUsers = function () {
+var seedWords = function () {
 
-    var users = [
-        {
-            email: 'testing@fsa.com',
-            password: 'password'
-        },
-        {
-            email: 'obama@gmail.com',
-            password: 'potus'
-        }
-    ];
-
-    var words = fs.readFileSync('./dictionary/1-1000.txt').toString().split('\n');
-
-    words = words.filter(function(word) {
-        return word.length > 3;
-    })
+    //var words = fs.readFileSync('./dictionary/1-1000.txt').toString().split('\n');
+    var words = fs.readFileSync('./dictionary/twl.txt').toString().split('\n');
+    // words = words.filter(function(word) {
+    //     return word.length > 3;
+    // })
 
     words = words.map(function(word) {
         return {word: word};
@@ -80,6 +69,9 @@ var seedUsers = function () {
 db.sync({ force: true })
     .then(function () {
         return seedUsers();
+    })
+    .then(function () {
+        return seedWords();
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
