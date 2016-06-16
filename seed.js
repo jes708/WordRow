@@ -20,6 +20,8 @@ name in the environment files.
 var chalk = require('chalk');
 var db = require('./server/db');
 var User = db.model('user');
+var Word = db.model('word');
+var fs = require('fs');
 var Promise = require('sequelize').Promise;
 
 var seedUsers = function () {
@@ -40,6 +42,38 @@ var seedUsers = function () {
     });
 
     return Promise.all(creatingUsers);
+
+};
+
+
+var seedUsers = function () {
+
+    var users = [
+        {
+            email: 'testing@fsa.com',
+            password: 'password'
+        },
+        {
+            email: 'obama@gmail.com',
+            password: 'potus'
+        }
+    ];
+
+    var words = fs.readFileSync('./dictionary/1-1000.txt').toString().split('\n');
+
+    words = words.filter(function(word) {
+        return word.length > 3;
+    })
+
+    words = words.map(function(word) {
+        return {word: word};
+    });
+
+    var creatingWords = words.map(function (wordObj) {
+        return Word.create(wordObj);
+    });
+
+    return Promise.all(creatingWords);
 
 };
 
