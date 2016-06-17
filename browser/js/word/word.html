@@ -1,9 +1,10 @@
 <section id="word">
-    <form name="anagram" ng-submit="verify(pot, word)">
+    <form name="anagram" ng-submit="verify(pot, word.toLowerCase())">
       <input type="text" ng-model="word"/>
       <button type="submit">PLAY</button>
     </form>
-
-    <p ng-repeat="letter in pot track by $index">{{letter}}</p>
+    <div id="pot">
+    <span ng-repeat="letter in pot track by $index">{{letter.toUpperCase()}}</span>
+    </div>
     <button ng-click="createPot(pot)">DRAW</button>
 </section>
