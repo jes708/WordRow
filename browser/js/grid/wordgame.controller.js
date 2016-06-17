@@ -84,6 +84,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
     //set after player has join the room, make sure room is not full
     $scope.whichPlayer = function() {
+        $scope.enableBoard = true;
         roomFactory.whichPlayer(window.location.pathname)
             .then(function(data) {
                 // console.log('it happened')
