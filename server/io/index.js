@@ -27,12 +27,12 @@ module.exports = function(server) {
           // } else {
           //   socket.emit('board', data[roomName]);
           // }
-          console.log('here')
+          // console.log('above is room sharing data if we decide to save')
           socket.broadcast.to(roomName).emit('justTesting', 'something')
         });
 
-        socket.on('completeMove', function(){
-          socket.broadcast.to(roomName).emit('newBoardData', data[roomName])
+        socket.on('claim', function(spotData){
+          socket.broadcast.to(roomName).emit('newBoardData', spotData)
         })
 
         socket.on('disconnect', function() {
