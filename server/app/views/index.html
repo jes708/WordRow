@@ -36,7 +36,7 @@
     <button ng-click="accept()">Accept</button>
     <button ng-click="decline()">Decline</button>
     </div>
-     <button ng-show="showNewGame" ng-click='newGame()'/>New Game</button>
+     <button ng-if="enableBoard" ng-show="showNewGame" ng-click='newGame()'/>New Game</button>
      {{ gameStatus }}
      <button ng-hide="playerNumber || playerNumber == 0" ng-click="whichPlayer()">Join room</button>
  </div>
