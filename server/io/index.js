@@ -35,6 +35,10 @@ module.exports = function(server) {
           socket.broadcast.to(roomName).emit('newBoardData', spotData)
         })
 
+        socket.on('claimEnd', function(spotData){
+          socket.broadcast.to(roomName).emit('claimEndC', spotData)
+        })
+
         socket.on('accept', function(){
           socket.broadcast.to(roomName).emit('acceptC')
         })
