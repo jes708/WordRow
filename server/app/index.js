@@ -31,7 +31,7 @@ module.exports = function (db) {
     });
 
     app.get('/*', function (req, res) {
-        res.sendFile(app.get('indexHTMLPath'));
+        res.sendFile(path.join(__dirname + '/views/index.html'));
     });
 
     // Error catching endware.
