@@ -54,6 +54,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
         Socket.on('claimEndC', function(spotData) {
             $scope.gameEnd = true
+            $scope.yourTurn = true
             $scope.messages = 'You have lost'
             updateBoard(spotData)
             $scope.$digest()
