@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <base href="/" />
     <title>Words Sword</title>
@@ -16,30 +17,33 @@
     <script src="/grid_game_helpers.js"></script>
     <script src="/main.js"></script>
 </head>
+
 <body ng-app="FullstackGeneratedApp">
     <navbar></navbar>
     <div id="main" ui-view></div>
-<div class='gameContainer' ng-controller='WordGameController'>
-    <div ng-if="enableBoard" ng-game-board cols='4' rows='4' ng-model='gameBoard'></div>
-    <ul>
+    <div class='gameContainer' ng-controller='WordGameController'>
+        <div ng-if="enableBoard" ng-game-board cols='4' rows='4' ng-model='gameBoard'></div>
+        <!--     <ul>
         <li ng-repeat='player in players'>
-            <span class='{{player.token}}Token'>{{player.name}}</b>
+            <span class='{{player.token}}Token'>{{player.name}}</span>
       </li>
      </ul>
-
-     <select ng-model='firstPlayer' ng-options='player.name for player in players'></select>
-
-    <span ng-show="messages">{{messages}}</span>
-    <div ng-show="askNew">
-    New game requested
-    <button ng-click="accept()">Accept</button>
-    <button ng-click="decline()">Decline</button>
+ -->
+        <span class='{{player.token}}Token' ng-if="yourTurn">Your turn</span>
+        <span class='{{player.token}}Token' ng-if="!yourTurn">Waiting on your oppenent</span>
+        <!-- <select ng-model='firstPlayer' ng-options='player.name for player in players'></select> -->
+        <span ng-show="messages">{{messages}}</span>
+        <div ng-show="askNew">
+            New game requested
+            <button ng-click="accept()">Accept</button>
+            <button ng-click="decline()">Decline</button>
+        </div>
+        <button ng-if="enableBoard" ng-show="showNewGame" ng-click='newGame()' />New Game</button>
+        {{ gameStatus }}
+        <button ng-hide="playerNumber || playerNumber == 0" ng-click="joinGame()">Join room</button>
     </div>
-     <button ng-if="enableBoard" ng-show="showNewGame" ng-click='newGame()'/>New Game</button>
-     {{ gameStatus }}
-     <button ng-hide="playerNumber || playerNumber == 0" ng-click="joinGame()">Join room</button>
- </div>
 </body>
 <footer>
 </footer>
+
 </html>
