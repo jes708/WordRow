@@ -41,9 +41,9 @@ app.factory('WordFactory', function ($http) {
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
   var vowels = 'aeiou';
   var consonants = 'bcdfghjklmnpqrstvwxyz';
-  var common = "cbnmasdfghlertiop";
+  var common = "bnmasdfghlertiop";
   var commonVowels = "aeio";
-  var commonConsonants = "cbnmsdfghlrtp";
+  var commonConsonants = "bnmsdfghlrtp";
 
   function randLetter() {
     console.log('randLetter')
@@ -62,7 +62,7 @@ app.factory('WordFactory', function ($http) {
 
   function commonLetter() {
     console.log('commonLetter')
-    return common[Math.floor(Math.random() * 17)]
+    return common[Math.floor(Math.random() * 16)]
   }
 
   function commonVowel() {
@@ -72,7 +72,7 @@ app.factory('WordFactory', function ($http) {
 
   function commonConsonant() {
     console.log('commonConsonant')
-    return commonConsonants[Math.floor(Math.random() * 13)]
+    return commonConsonants[Math.floor(Math.random() * 12)]
   }
 
   function vowelCount(pot) {
@@ -105,15 +105,13 @@ app.factory('WordFactory', function ($http) {
         else pot.push(randLetter());
       }
     }
-    // $scope.pot = pot;
   };
 
   WordFactory.verify = function(pot, word, steal) {
     var stealCopy = steal || "";
     var potCopy = pot.slice();
     var wordCopy = word;
-
-    var validLetters = (stealCopy.split("") + potCopy.sort());
+    var validLetters = (stealCopy.split("").concat(potCopy)).sort();
     var sortedWord = wordCopy.split("").sort();
     var i = 0;
     var j = 0;
@@ -131,13 +129,10 @@ app.factory('WordFactory', function ($http) {
   };
 
   WordFactory.endTurn = function(pot, word, steal) {
-    //remove used letters from pot
+
     var stealCopy = steal || "";
-    // var potCopy = pot.slice();
     var wordCopy = word;
-    console.log(word)
     var wordLetters = wordCopy.split("").sort();
-    // var potLetters = potCopy.sort();
     var stealLetters = stealCopy.split("").sort();
     var i = 0;
 
