@@ -1,12 +1,16 @@
-app.controller("WordGameController", function($scope, Socket, roomFactory) {
+app.controller("WordGameController", function($scope, Socket, GameFactory, roomFactory, WordFactory) {
     GridGameHelp.ScopeDecorator($scope);
 
     Socket.on('connect', function() {
         console.log(window.location.pathname)
         Socket.emit('joinRoom', window.location.pathname)
 
-        Socket.on('justTesting', function(data) {
-            console.log(data)
+        Socket.on('newBoardData', function(spotData) {
+          let cell= $scope.getCell(spotData.x, spotData.y)
+          cell.player = $scope.players[spotData.playerNum]
+          console.log('@@@@', spotData.word)
+          cell.word = spotData.word
+          $scope.$digest()
         })
     })
 
@@ -59,10 +63,34 @@ app.controller("WordGameController", function($scope, Socket, roomFactory) {
                 }
             })
     }
+
+
+    $scope.selectedCell = undefined
+
+    //word controller should call this, if user is successful coming up with word
+    $scope.claimcell = function() {
+      let winningWord = GameFactory.getWord()
+      console.log('claimed word: ', winningWord)
+      let cell = $scope.getCell($scope.selectedCell.x, $scope.selectedCell.y)
+      cell.player = $scope.players[$scope.playerNumber]
+      cell.word = winningWord
+      // $scope.$digest()
+      Socket.emit('claim', {
+        playerNum: $scope.playerNumber,
+        x: $scope.selectedCell.x,
+        y: $scope.selectedCell.y,
+        word: winningWord
+      })
+      $scope.selectedCell = undefined
+    }
+
+
     $scope.processClick = function(cell) {
-        console.log($scope.playerNumber)
+        // console.log($scope.playerNumber)
+        // $scope.selectedCell = cell
+        // cell.player = $scope.players[$scope.playerNumber]
         $scope.selectedCell = cell
-        cell.player = $scope.players[$scope.playerNumber]
+        GameFactory.setSteal(cell.word)
     }
 
 

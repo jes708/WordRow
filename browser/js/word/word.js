@@ -6,33 +6,33 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('WordCtrl', function ($scope, WordFactory) {
+// app.controller('WordCtrl', function ($scope, WordFactory) {
 
-  $scope.submit = WordFactory.submitWord;
+//   $scope.submit = WordFactory.submitWord;
 
-  $scope.pot = [];
+//   $scope.pot = [];
 
-  $scope.createPot = WordFactory.createPot
+//   $scope.createPot = WordFactory.createPot
 
-  $scope.verify = function(pot, word, steal) {
-    if (WordFactory.verify(pot, word, steal)) {
+//   $scope.verify = function(pot, word, steal) {
+//     if (WordFactory.verify(pot, word, steal)) {
 
-      WordFactory.submitWord(word)
-      .then(function(response) {
-        if (response.data) {
-          WordFactory.endTurn(pot, word, steal);
-          WordFactory.createPot(pot);
-        } else {
-          $scope.message = "Invalid word";
-        }
-      });
+//       WordFactory.submitWord(word)
+//       .then(function(response) {
+//         if (response.data) {
+//           WordFactory.endTurn(pot, word, steal);
+//           WordFactory.createPot(pot);
+//         } else {
+//           $scope.message = "Invalid word";
+//         }
+//       });
 
-    } else {
-      $scope.message = "Invalid letters";
-    }
-  };
+//     } else {
+//       $scope.message = "Invalid letters";
+//     }
+//   };
 
-});
+// });
 
 app.factory('WordFactory', function ($http) {
 
@@ -107,7 +107,7 @@ app.factory('WordFactory', function ($http) {
     }
     // $scope.pot = pot;
   };
-  
+
   WordFactory.verify = function(pot, word, steal) {
     var stealCopy = steal || "";
     var potCopy = pot.slice();

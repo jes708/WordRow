@@ -1,7 +1,7 @@
 <section id="word">
     <form name="anagram" ng-submit="verify(pot, word.toLowerCase())">
       <input type="text" ng-model="word"/>
-      <button type="submit">PLAY</button>
+      <button ng-disabled="!selectedcell" type="submit">PLAY</button>
     </form>
     <div id="pot">
     <span ng-repeat="letter in pot track by $index">{{letter.toUpperCase()}}</span>
