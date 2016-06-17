@@ -5,7 +5,8 @@ app.directive('wordbox', function(WordFactory, GameFactory){
     scope: {
       claimcell: '&',
       selectedcell: '=',
-      winningword: '='
+      winningword: '=',
+      gameStatus: '='
     },
     link: function(scope) {
       console.log('loaded')
@@ -26,6 +27,7 @@ app.directive('wordbox', function(WordFactory, GameFactory){
       };
 
       scope.verify = function(pot, word) {
+        if (scope.gameStatus) return
         let steal = GameFactory.getSteal()
         if (WordFactory.verify(pot, word, steal)) {
 
