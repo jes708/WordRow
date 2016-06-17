@@ -5,14 +5,29 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         console.log(window.location.pathname)
         Socket.emit('joinRoom', window.location.pathname)
 
+        Socket.on('roomData', function(data) {
+            console.log('roomData happened', data)
+            if (data.count.length < 2) {
+                console.log('data.count: ', data.count)
+                $scope.messages = 'Waiting for another player'
+                $scope.yourTurn = true
+            } else {
+                $scope.messages = undefined
+                // $scope.enableBoard = true
+                $scope.$digest()
+            }
+        })
+
         function updateBoard(spotData) {
-          let cell = $scope.getCell(spotData.x, spotData.y)
-          cell.player = $scope.players[spotData.playerNum]
-          cell.word = spotData.word
+            let cell = $scope.getCell(spotData.x, spotData.y)
+            cell.player = $scope.players[spotData.playerNum]
+            cell.word = spotData.word
         }
 
-        Socket.on('newBoardData', function(spotData) {
+        Socket.on('claimC', function(spotData) {
             updateBoard(spotData)
+            $scope.yourTurn = true
+            console.log($scope.yourTurn)
             $scope.$digest()
         })
 
@@ -37,11 +52,11 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
             }, 5000)
         })
 
-        Socket.on('claimEndC', function(spotData){
-          $scope.gameEnd = true
-          $scope.messages = 'You have lost'
-          updateBoard(spotData)
-          $scope.$digest()
+        Socket.on('claimEndC', function(spotData) {
+            $scope.gameEnd = true
+            $scope.messages = 'You have lost'
+            updateBoard(spotData)
+            $scope.$digest()
         })
     })
 
@@ -80,6 +95,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         return false;
     }
 
+    $scope.yourTurn = false
 
     $scope.showNewGame = true
 
@@ -117,9 +133,9 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
                 let cell = $scope.getCell(i, j)
                 cell.player = undefined
                 cell.word = undefined
-                console.log($scope.getCell(i, j))
             }
         }
+        $scope.messages = undefined
         $scope.gameEnd = false;
     }
 
@@ -140,9 +156,15 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
                     console.log('room is full')
                 } else if (data === 'Player 1') {
                     $scope.playerNumber = 0
+                    $scope.player = $scope.players[$scope.playerNumber]
+                    $scope.yourTurn = true
+                    console.log($scope.player.token)
                     console.log($scope.playerNumber)
                 } else if (data === 'Player 2') {
                     $scope.playerNumber = 1
+                    $scope.player = $scope.players[$scope.playerNumber]
+                    // $scope.$digest()
+                    console.log($scope.player.token)
                     console.log($scope.playerNumber)
                 }
             })
@@ -155,19 +177,21 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
     //word controller should call this, if user is successful coming up with word
     $scope.claimCell = function() {
+        $scope.yourTurn = false
         let winningWord = GameFactory.getWord()
         console.log('claimed word: ', winningWord)
         let cell = $scope.getCell($scope.selectedCell.x, $scope.selectedCell.y)
         cell.player = $scope.players[$scope.playerNumber]
         cell.word = winningWord
         if (chkWinner()) {
-          $scope.gameEnd = true
-          Socket.emit('claimEnd', {
-            playerNum: $scope.playerNumber,
-            x: $scope.selectedCell.x,
-            y: $scope.selectedCell.y,
-            word: winningWord
-          })
+            $scope.gameEnd = true
+            $scope.messages = 'You have lost'
+            Socket.emit('claimEnd', {
+                playerNum: $scope.playerNumber,
+                x: $scope.selectedCell.x,
+                y: $scope.selectedCell.y,
+                word: winningWord
+            })
         } else {
             Socket.emit('claim', {
                 playerNum: $scope.playerNumber,
@@ -177,6 +201,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
             })
         }
         $scope.selectedCell = undefined
+            // $scope.$digest()
     }
 
 
