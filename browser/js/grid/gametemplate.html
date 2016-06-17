@@ -1,6 +1,6 @@
 <div ng-repeat='row in gameBoard.rows' class='gameRow'>
     <div ng-repeat='cell in gameBoard.rows[$index]' ng-class='cell.statusToken()' class='gameCell' ng-click='processClick(cell)'>
-        <div draggable='true' ng-class='{selected: selectedCell === cell, p1Token: cell.player.token === "p1" ,p2Token: cell.player.token === "p2" }' class='token'>
+        <div ng-click='focus("type-word")' draggable='true' ng-class='{selected: selectedCell === cell, p1Token: cell.player.token === "p1" ,p2Token: cell.player.token === "p2" }' class='token'>
             <span class='icon'>{{cell.getIcon()}}</span>
             <span>{{cell.word}}</span>
             <span class='decoration'>{{cell.decoration}}</div>

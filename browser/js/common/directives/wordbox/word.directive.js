@@ -3,11 +3,6 @@ app.directive('wordbox', function(WordFactory, GameFactory){
     restrict: 'E',
     templateUrl: 'js/common/directives/wordbox/word.html',
     scope: 'true',
-    // {
-    //   claimcell: '&',
-    //   selectedcell: '=',
-    //   winningword: '='
-    // },
     link: function(scope) {
       console.log('loaded')
       scope.submit = WordFactory.submitWord;
@@ -27,8 +22,8 @@ app.directive('wordbox', function(WordFactory, GameFactory){
       };
 
       scope.verify = function(pot, word) {
-        if (scope.gameStatus) return
-        let steal = GameFactory.getSteal()
+        if (scope.gameStatus) return;
+        let steal = GameFactory.getSteal();
         if (WordFactory.verify(pot, word, steal)) {
 
           WordFactory.submitWord(word)

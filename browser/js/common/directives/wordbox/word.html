@@ -1,6 +1,6 @@
 <section id="word">
     <form name="anagram" ng-submit="verify(pot, word.toLowerCase())">
-      <input type="text" ng-model="word"/>
+      <input id="type-word" type="text" ng-model="word"/>
       <button ng-disabled="!selectedCell" type="submit">PLAY</button>
     </form>
     <div id="pot">
