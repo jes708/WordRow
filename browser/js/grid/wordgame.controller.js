@@ -12,12 +12,49 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
           cell.word = spotData.word
           $scope.$digest()
         })
+
+        Socket.on('reqNewGameC', function() {
+          $scope.askNew = true
+          $scope.$digest()
+        })
+
+        Socket.on('acceptC', function(){
+          $scope.resetGame()
+          $scope.$digest()
+        })
+
+        Socket.on('declineC', function(){
+          $scope.messages = 'New match declined'
+          $scope.showNewGame = false
+          $scope.$digest()
+          setTimeout(function(){
+            $scope.messages = undefined
+            $scope.showNewGame = true
+            $scope.$digest()
+          }, 5000)
+        })
     })
+
+    $scope.showNewGame = true
+
+    $scope.askNew = false
+
+    $scope.messages = undefined
 
     Socket.on('servertoldyoutoupdate', function() {
         $scope.board = boardFactory.getBoard()
     })
 
+    $scope.accept = function(){
+      $scope.askNew = false
+      $scope.resetGame()
+      Socket.emit('accept')
+    }
+
+    $scope.decline = function() {
+      Socket.emit('decline')
+      $scope.askNew = false
+    }
     // $scope.processClick = function(cell){
     //   if(processSideEffects(cell)){
     //     $scope.placeToken(cell);
@@ -28,20 +65,19 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
     //   // game logic for check word
     // }
 
-    $scope.newGame = function() {
-        //set token fo defaults
+    $scope.resetGame = function() {
         for (var i = 0; i < $scope.gameBoard.rows.length; i++) {
             for (var j = 0; j < $scope.gameBoard.rows[i].length; j++) {
-                $scope.getCell(i, j).player = undefined
+                let cell = $scope.getCell(i, j)
+                cell.player = undefined
+                cell.word = undefined
                 console.log($scope.getCell(i, j))
             }
         }
-        $scope.activePlayerId = $scope.firstPlayer.id
-            // $scope.getCell(3,3).player = $scope.activePlayer()
-            // $scope.getCell(4,3).player = $scope.nextPlayer()
+    }
 
-        //reset game
-        //activePlayer & nextPlayer 2 players
+    $scope.newGame = function() {
+      Socket.emit('reqNewGame')
     }
 
     $scope.playerNumber = undefined
