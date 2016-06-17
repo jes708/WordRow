@@ -29,8 +29,8 @@
       </li>
      </ul>
  -->
-        <span class='{{player.token}}Token' ng-if="yourTurn">Your turn</span>
-        <span class='{{player.token}}Token' ng-if="!yourTurn">Waiting on your oppenent</span>
+        <span class='{{player.token}}Token' ng-if="yourTurn && enableBoard">Your turn</span>
+        <span class='{{player.token}}Token' ng-if="!yourTurn && enableBoard">Waiting on your oppenent</span>
         <!-- <select ng-model='firstPlayer' ng-options='player.name for player in players'></select> -->
         <span ng-show="messages">{{messages}}</span>
         <div ng-show="askNew">
