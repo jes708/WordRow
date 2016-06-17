@@ -20,7 +20,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
     // $scope.processClick = function(cell){
     //   if(processSideEffects(cell)){
-    //     $scope.placeToken(cell);
+    //     $scope.placeToken(cell); 
     //     $scope.passPlay()
     //     $scope.activePlayer().addPoints(1)
     //     checkGameCompletion();
