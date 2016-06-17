@@ -122,13 +122,11 @@ app.factory('WordFactory', function ($http) {
       if (validLetters[i] === sortedWord[j]) {
         j++
         if (j >= sortedWord.length ) {
-          console.log('yes')
           return true;
         }
       }
       i++
     }
-    console.log('no')
     return false
   };
 
