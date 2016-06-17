@@ -45,11 +45,15 @@ body{
 }
 
 .p2Token{
-  background-color: green;
-  color: #111111;
+  background-color: #6261b9;
+  color: black;
 }
 
 .p1Token{
-  background-color: black;
-  color: #eeeeee;
+  background-color: #ca4848;
+  color: black;
+}
+
+.selected{
+  border: 5px ridge #fdff63;
 }
