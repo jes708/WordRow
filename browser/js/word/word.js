@@ -111,11 +111,22 @@ app.factory('WordFactory', function ($http) {
     var stealCopy = steal || "";
     var potCopy = pot.slice();
     var wordCopy = word;
-    var validLetters = (stealCopy.split("").concat(potCopy)).sort();
+    var stealLetters = stealCopy.split("").sort();
+    var validLetters = (stealLetters.concat(potCopy)).sort();
     var sortedWord = wordCopy.split("").sort();
     var i = 0;
     var j = 0;
 
+    while (i < sortedWord.length) {
+      if (stealLetters[0] === sortedWord[i]) {
+        stealLetters.shift();
+      }
+      i++
+    }
+
+    if (stealLetters.join().length) return false;
+
+    i = 0;
     while (i < validLetters.length && j < sortedWord.length) {
       if (validLetters[i] === sortedWord[j]) {
         j++
