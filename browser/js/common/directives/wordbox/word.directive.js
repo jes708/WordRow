@@ -12,8 +12,18 @@ app.directive('wordbox', function(WordFactory, GameFactory){
       scope.submit = WordFactory.submitWord;
 
       scope.pot = [];
+      var redrawsRemaining = 4;
 
       scope.createPot = WordFactory.createPot
+
+      scope.redraw = function() {
+        if (redrawsRemaining) {
+        redrawsRemaining--
+        console.log(redrawsRemaining);
+          scope.pot = [];
+          WordFactory.createPot(scope.pot);
+        }
+      };
 
       scope.verify = function(pot, word) {
         let steal = GameFactory.getSteal()
