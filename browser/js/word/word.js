@@ -81,6 +81,7 @@ app.factory('WordFactory', function ($http) {
 
   WordFactory.verify = function(pot, word, steal) {
     var stealCopy = steal || "";
+    if (word.length <= stealCopy.length) return false;
     var potCopy = pot.slice();
     var wordCopy = word;
     var stealLetters = stealCopy.split("").sort();

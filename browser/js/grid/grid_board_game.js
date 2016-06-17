@@ -7,8 +7,8 @@ app.directive('ngGameBoard', function(){
     require: '^ngModel',
     templateUrl: 'js/grid/gametemplate.html',
     link: function(scope, element, attrs, controller){
-      return new GridGameHelp.GameBoard(scope, element, attrs, controller)
+      return new GridGameHelp.GameBoard(scope, element, attrs, controller);
     }
 
-  }
+  };
 });

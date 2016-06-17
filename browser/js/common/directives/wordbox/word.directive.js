@@ -3,11 +3,6 @@ app.directive('wordbox', function(WordFactory, GameFactory){
     restrict: 'E',
     templateUrl: 'js/common/directives/wordbox/word.html',
     scope: 'true',
-    // {
-    //   claimcell: '&',
-    //   selectedcell: '=',
-    //   winningword: '='
-    // },
     link: function(scope) {
       console.log('loaded')
       scope.submit = WordFactory.submitWord;
