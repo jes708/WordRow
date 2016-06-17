@@ -30,7 +30,13 @@
 
      <select ng-model='firstPlayer' ng-options='player.name for player in players'></select>
 
-     <button ng-click='newGame()'/>New Game</button>
+    <span ng-show="messages">{{messages}}</span>
+    <div ng-show="askNew">
+    New game requested
+    <button ng-click="accept()">Accept</button>
+    <button ng-click="decline()">Decline</button>
+    </div>
+     <button ng-show="showNewGame" ng-click='newGame()'/>New Game</button>
      {{ gameStatus }}
      <button ng-hide="playerNumber || playerNumber == 0" ng-click="whichPlayer()">Join room</button>
  </div>

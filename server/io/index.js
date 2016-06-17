@@ -35,6 +35,18 @@ module.exports = function(server) {
           socket.broadcast.to(roomName).emit('newBoardData', spotData)
         })
 
+        socket.on('accept', function(){
+          socket.broadcast.to(roomName).emit('acceptC')
+        })
+
+        socket.on('decline', function(){
+          socket.broadcast.to(roomName).emit('declineC')
+        })
+
+        socket.on('reqNewGame', function(){
+          socket.broadcast.to(roomName).emit('reqNewGameC')
+        })
+
         socket.on('disconnect', function() {
             console.log('A client has disconnected :(');
             console.log(socket.id);
