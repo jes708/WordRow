@@ -28,11 +28,13 @@ module.exports = function(server) {
           //   socket.emit('board', data[roomName]);
           // }
           // console.log('above is room sharing data if we decide to save')
-          socket.broadcast.to(roomName).emit('justTesting', 'something')
+          io.sockets.in(roomName).emit('roomData', {
+            count: io.sockets.adapter.rooms[roomName]
+          })
         });
 
         socket.on('claim', function(spotData){
-          socket.broadcast.to(roomName).emit('newBoardData', spotData)
+          socket.broadcast.to(roomName).emit('claimC', spotData)
         })
 
         socket.on('claimEnd', function(spotData){

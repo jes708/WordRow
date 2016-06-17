@@ -23,6 +23,7 @@ app.directive('wordbox', function(WordFactory, GameFactory){
 
       scope.verify = function(pot, word) {
         if (scope.gameStatus) return;
+        if (!scope.yourTurn) return;
         let steal = GameFactory.getSteal();
         if (WordFactory.verify(pot, word, steal)) {
 
@@ -34,6 +35,7 @@ app.directive('wordbox', function(WordFactory, GameFactory){
               WordFactory.createPot(pot);
               GameFactory.setWord(wordRes.data.word)
               scope.word = ''
+              console.log('your turn: ', scope.yourTurn)
               scope.claimCell();
             } else {
               scope.message = "Invalid word";
