@@ -14,7 +14,23 @@ app.controller('WordCtrl', function ($scope, WordFactory) {
 
   $scope.createPot = WordFactory.createPot
 
-  $scope.verify = WordFactory.verify;
+  $scope.verify = function(pot, word, steal) {
+    if (WordFactory.verify(pot, word, steal)) {
+
+      WordFactory.submitWord(word)
+      .then(function(response) {
+        if (response.data) {
+          WordFactory.endTurn(pot, word, steal);
+          WordFactory.createPot(pot);
+        } else {
+          $scope.message = "Invalid word";
+        }
+      });
+
+    } else {
+      $scope.message = "Invalid letters";
+    }
+  };
 
 });
 
@@ -72,7 +88,7 @@ app.factory('WordFactory', function ($http) {
   }
 
   WordFactory.submitWord = function(word) {
-    return $http.post('/api/words/', word);
+    return $http.post('/api/words/', {word: word});
   };
 
   WordFactory.createPot = function(pot) {
@@ -93,11 +109,12 @@ app.factory('WordFactory', function ($http) {
   };
   
   WordFactory.verify = function(pot, word, steal) {
-    steal = steal || "";
+    var stealCopy = steal || "";
     var potCopy = pot.slice();
+    var wordCopy = word;
 
-    var validLetters = (steal.split("") + potCopy.sort());
-    var sortedWord = word.split("").sort();
+    var validLetters = (stealCopy.split("") + potCopy.sort());
+    var sortedWord = wordCopy.split("").sort();
     var i = 0;
     var j = 0;
 
@@ -115,29 +132,32 @@ app.factory('WordFactory', function ($http) {
     return false
   };
 
+  WordFactory.endTurn = function(pot, word, steal) {
+    //remove used letters from pot
+    var stealCopy = steal || "";
+    // var potCopy = pot.slice();
+    var wordCopy = word;
+    console.log(word)
+    var wordLetters = wordCopy.split("").sort();
+    // var potLetters = potCopy.sort();
+    var stealLetters = stealCopy.split("").sort();
+    var i = 0;
+
+    while (stealLetters.length) {
+      if (stealLetters[0] === wordLetters[i]) {
+        stealLetters.shift();
+        wordLetters.shift();
+      } else {
+        i++
+      }
+    }
+
+    while (wordLetters.length) {
+      pot.splice(pot.indexOf(wordLetters.shift()),1);
+    }
+
+  };
 
   return WordFactory;
 
 });
-
-//aerdpo //keep a, discard erdpo
-
-//roped  //does it contain all five of these letters?
-
-//ajilbe //isInPot?
-
-//period
-
-//scrabble dictionary in db
-
-//a pot of letters that always has 6 letters, and at least two consonants or two vowels
-
-//click on spaces
-
-//check if letters are from pot
-
-//check if words are legal
-
-//check if anagrams are longer than previous entry, contain letter from pot, and are legal
-
-//check if five in a row are all same color
