@@ -154,7 +154,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
     $scope.gameEnd = false
 
     //word controller should call this, if user is successful coming up with word
-    $scope.claimcell = function() {
+    $scope.claimCell = function() {
         let winningWord = GameFactory.getWord()
         console.log('claimed word: ', winningWord)
         let cell = $scope.getCell($scope.selectedCell.x, $scope.selectedCell.y)

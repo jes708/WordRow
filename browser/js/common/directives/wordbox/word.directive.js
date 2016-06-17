@@ -2,12 +2,12 @@ app.directive('wordbox', function(WordFactory, GameFactory){
   return {
     restrict: 'E',
     templateUrl: 'js/common/directives/wordbox/word.html',
-    scope: {
-      claimcell: '&',
-      selectedcell: '=',
-      winningword: '=',
-      gameStatus: '='
-    },
+    scope: 'true',
+    // {
+    //   claimcell: '&',
+    //   selectedcell: '=',
+    //   winningword: '='
+    // },
     link: function(scope) {
       console.log('loaded')
       scope.submit = WordFactory.submitWord;
@@ -38,7 +38,8 @@ app.directive('wordbox', function(WordFactory, GameFactory){
               WordFactory.endTurn(pot, word, steal);
               WordFactory.createPot(pot);
               GameFactory.setWord(wordRes.data.word)
-              scope.claimcell();
+              scope.word = ''
+              scope.claimCell();
             } else {
               scope.message = "Invalid word";
             }
