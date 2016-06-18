@@ -5,15 +5,27 @@ var router = require('express').Router();
 
 module.exports = router;
 
+router.get('/:roomName', function(req, res, next) {
+    Room.findOrCreate({
+        where: {
+            room: req.params.roomName
+        }
+    })
+    .then(function(room) {
+        room = room[0]
+        res.send(room)
+    })
+    .catch(next)
+})
+
 router.post('/', function(req, res, next) {
     //req.user.id
     if (req.user) {
-        if (req.body.room === '/') {
-            req.body.room = 'root'
-        } else {
-           req.body.room = req.body.room.match(/\/(\d*\w*)\/?/i)[1]
-        }
-        //need more logic for regex
+        // if (req.body.room === '/') {
+        //     req.body.room = 'root'
+        // } else {
+        //    req.body.room = req.body.room.match(/\/(\d*\w*)\/?/i)[1]
+        // }
         return Room.findOrCreate({
                 where: req.body
             })
