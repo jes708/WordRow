@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-lg-6  col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>Join a room</h3>
+                <form ng-submit="go(roomName)" name="searchForm">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </span>
+                    <input name="roomName" type="text" class="form-control" placeholder="Enter room name..." aria-describedby="basic-addon1" ng-model="roomName">
+                    <span class="input-group-btn">
+                    <button ng-click="go(roomName)" ng-disabled="searchForm.$pristine" class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

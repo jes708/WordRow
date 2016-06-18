@@ -50,6 +50,7 @@ app.run(function ($rootScope, AuthService, $state) {
             }
         });
 
+        $rootScope.$state = $state;
     });
 
 });
