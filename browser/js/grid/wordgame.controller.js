@@ -10,7 +10,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
             if (data.count.length < 2) {
                 console.log('data.count: ', data.count)
                 $scope.messages = 'Waiting for another player'
-                $scope.yourTurn = true
+                // $scope.yourTurn = true
             } else {
                 $scope.messages = undefined
                 // $scope.enableBoard = true
@@ -27,6 +27,11 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         Socket.on('claimC', function(spotData) {
             updateBoard(spotData)
             $scope.yourTurn = true
+            $scope.timer = new timer(function() {
+              Socket.emit('passedTurn')
+              $scope.yourTurn = false
+              $scope.$digest()
+            }, 20000)
             console.log($scope.yourTurn)
             $scope.$digest()
         })
@@ -54,11 +59,53 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
         Socket.on('claimEndC', function(spotData) {
             $scope.gameEnd = true
+            $scope.yourTurn = true
             $scope.messages = 'You have lost'
             updateBoard(spotData)
             $scope.$digest()
         })
+
+        Socket.on('passedTurnC', function() {
+          $scope.yourTurn = true
+          $scope.timer = new timer(function() {
+            Socket.emit('passedTurn')
+            $scope.yourTurn = false
+            $scope.$digest()
+          }, 20000)
+          $scope.$digest()
+        })
     })
+
+    function timer(callback, delay) {
+        var id, started, remaining = delay, running
+
+        this.start = function() {
+            running = true
+            started = new Date()
+            id = setTimeout(callback, remaining)
+        }
+
+        this.pause = function() {
+            running = false
+            clearTimeout(id)
+            remaining -= new Date() - started
+        }
+
+        this.getTimeLeft = function() {
+            if (running) {
+                this.pause()
+                this.start()
+            }
+
+            return remaining
+        }
+
+        this.getStateRunning = function() {
+            return running
+        }
+
+        this.start()
+    }
 
     function chkLine(a, b, c, d) {
         // Check first cell non-zero and all cells match
@@ -136,6 +183,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
     }
 
     $scope.redrawsRemaining = 3;
+
     $scope.playerNumber = undefined
 
 
@@ -199,6 +247,11 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
                     $scope.playerNumber = 0
                     $scope.player = $scope.players[$scope.playerNumber]
                     $scope.yourTurn = true
+                    $scope.timer = new timer(function() {
+                      Socket.emit('passedTurn')
+                      $scope.yourTurn = false
+                      $scope.$digest()
+                    }, 20000)
                     console.log($scope.player.token)
                     console.log($scope.playerNumber)
                 } else if (data === 'Player 2') {
@@ -218,6 +271,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
     //word controller should call this, if user is successful coming up with word
     $scope.claimCell = function() {
+        $scope.timer = undefined
         $scope.yourTurn = false
         let winningWord = GameFactory.getWord()
         console.log('claimed word: ', winningWord)
@@ -226,7 +280,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         cell.word = winningWord
         if (chkWinner()) {
             $scope.gameEnd = true
-            $scope.messages = 'You have lost'
+            $scope.messages = 'You have won!'
             Socket.emit('claimEnd', {
                 playerNum: $scope.playerNumber,
                 x: $scope.selectedCell.x,
