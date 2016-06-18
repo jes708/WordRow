@@ -128,6 +128,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         // }
 
     $scope.resetGame = function() {
+        $scope.redrawsRemaining = 3;
         for (var i = 0; i < $scope.gameBoard.rows.length; i++) {
             for (var j = 0; j < $scope.gameBoard.rows[i].length; j++) {
                 let cell = $scope.getCell(i, j)
@@ -143,10 +144,56 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         Socket.emit('reqNewGame')
     }
 
+    $scope.redrawsRemaining = 3;
     $scope.playerNumber = undefined
+
+
+      $scope.submit = WordFactory.submitWord;
+
+      $scope.pot = [];
+
+      $scope.createPot = WordFactory.createPot
+
+      $scope.redraw = function() {
+        if ($scope.redrawsRemaining) {
+        $scope.redrawsRemaining--
+        console.log($scope.redrawsRemaining);
+          $scope.pot = [];
+          WordFactory.createPot($scope.pot);
+        }
+      };
+
+      $scope.verify = function(pot, word) {
+        if ($scope.gameStatus) return;
+        if (!$scope.yourTurn) return;
+        let steal = GameFactory.getSteal();
+        if (WordFactory.verify(pot, word, steal)) {
+
+          WordFactory.submitWord(word)
+          .then(function(wordRes) {
+            if (wordRes.data) {
+              console.log('word res: ', wordRes.data.word)
+              WordFactory.endTurn(pot, word, steal);
+              WordFactory.createPot(pot);
+              GameFactory.setWord(wordRes.data.word)
+              $scope.word = ''
+              console.log('your turn: ', $scope.yourTurn)
+              $scope.claimCell();
+            } else {
+              $scope.message = "Invalid word";
+            }
+          });
+
+        } else {
+          $scope.message = "Invalid letters";
+        }
+      };
+
 
     //set after player has join the room, make sure room is not full
     $scope.joinGame = function() {
+        console.log("cool", $scope.redrawsRemaining)
+        WordFactory.createPot($scope.pot);
         $scope.enableBoard = true;
         roomFactory.whichPlayer(window.location.pathname)
             .then(function(data) {
