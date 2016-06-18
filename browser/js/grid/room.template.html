@@ -1,4 +1,4 @@
-   <div class='gameContainer' ng-controller='WordGameController'>
+   <div class='gameContainer'>
        <div ng-show="enableBoard" ng-game-board cols='4' rows='4' ng-model='gameBoard'></div>
        <!--     <ul>
        <li ng-repeat='player in players'>
@@ -22,5 +22,5 @@
        <span ng-show="roomInfo.player1 != user.id && roomInfo.player2 != user.id">
           <button ng-hide="spectating" ng-click="spec()">Spectate</button>
        </span>
-       <button ng-hide="playerNumber || playerNumber == 0 || (roomInfo.player1 != user.id && roomInfo.player2 != user.id && roomInfo.player1 != null && roomInfo.player2 != null)" ng-click="joinGame()">Join room</button>
+       <button ng-hide="spectating || playerNumber || playerNumber == 0 || (roomInfo.player1 != user.id && roomInfo.player2 != user.id && roomInfo.player1 != null && roomInfo.player2 != null)" ng-click="joinGame()">Join room</button>
    </div>
