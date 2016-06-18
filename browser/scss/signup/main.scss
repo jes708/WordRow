@@ -1,4 +1,15 @@
-#signup-form {
+#signup-container {
   width: 60%;
   margin: 0 auto;
+  background: white;
+  border-radius: 5px;
+  padding: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.38);
+  #signup-form {
+    margin: 0 auto;
+  }
+
+  div.oauth {
+    text-align: center;
+  }
 }
