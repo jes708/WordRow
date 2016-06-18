@@ -1,41 +1,92 @@
-app.controller("WordGameController", function($scope, Socket, GameFactory, roomFactory, WordFactory) {
+app.controller("WordGameController", function(UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
     GridGameHelp.ScopeDecorator($scope);
+
+    UserFactory.getId()
+        .then(user => { $scope.user = user;
+            console.log('here', user) })
 
     Socket.on('connect', function() {
         console.log(window.location.pathname)
-        Socket.emit('joinRoom', window.location.pathname)
+
+        $scope.roomName = location()
+
+        function location() {
+            let location = window.location.pathname
+            if (location === '/') {
+                return 'root'
+            } else {
+                return location.match(/\/rooms\/(\d*\w*)\/?/i)[1]
+            }
+        }
+
+        roomFactory.getRoom($scope.roomName)
+            .then(function(roomInfo) {
+                $scope.roomInfo = roomInfo
+                console.log(roomInfo)
+            })
+        Socket.emit('joinRoom', $scope.roomName)
 
         Socket.on('roomData', function(data) {
             console.log('roomData happened', data)
             if (data.count.length < 2) {
                 console.log('data.count: ', data.count)
                 $scope.messages = 'Waiting for another player'
-                // $scope.yourTurn = true
+                    // $scope.yourTurn = true
             } else {
                 $scope.messages = undefined
-                // $scope.enableBoard = true
+                    // $scope.enableBoard = true
                 $scope.$digest()
             }
         })
 
         function updateBoard(spotData) {
-            let cell = $scope.getCell(spotData.x, spotData.y)
+            // console.log('spotData', spotData)
+            // console.log('spotData', isNaN(spotData.x))
+            // console.log('spotData', isNaN(spotData.y))
+            var cell = $scope.getCell(spotData.x, spotData.y)
+                // console.log($scope.getCell)
             cell.player = $scope.players[spotData.playerNum]
             cell.word = spotData.word
         }
 
+        Socket.on('boardData', function(data) {
+            console.log('boardData', data)
+            if (data.length === 0) return;
+            data.forEach(function(move) {
+                if (move.redraw) {
+                    if (move.playerNum === $scope.playerNumber) {
+                        $scope.redrawsRemaining--
+                    }
+                } else if (move.pot) {
+                    if (move.playerNum === $scope.playerNumber) {
+                        $scope.pot = move.pot
+                    }
+                } else {
+                    updateBoard(move)
+                }
+                console.log('updating board')
+            })
+            let lastPlayer = data[data.length - 1].playerNum
+            if (lastPlayer === $scope.playerNumber) {
+                $scope.yourTurn = false
+            } else {
+                $scope.yourTurn = true
+            }
+            $scope.$digest()
+        })
+
         Socket.on('claimC', function(spotData) {
             updateBoard(spotData)
             $scope.yourTurn = true
-            $scope.timer = new timer(function() {
-              Socket.emit('passedTurn')
-              $scope.yourTurn = false
-              $scope.$digest()
-            }, 20000)
-            // $scope.timerChecker = $interval(function() {
-            //   $scope.timeRemaining = $scope.timer.getTimeLeft()
-            //   $scope.$digest()
-            // }, 1000)
+                // $scope.timer = new timer(function() {
+                //         Socket.emit('passedTurn')
+                //         $scope.yourTurn = false
+                //         $scope.$digest()
+                //     }, 20000)
+                // $scope.timerChecker = $interval(function() {
+                //   $scope.timeRemaining = $scope.timer.getTimeLeft()
+                //   $scope.$digest()
+                // }, 1000)
             console.log($scope.yourTurn)
             $scope.$digest()
         })
@@ -70,50 +121,51 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         })
 
         Socket.on('passedTurnC', function() {
-          $scope.yourTurn = true
-          $scope.timer = new timer(function() {
-            Socket.emit('passedTurn')
-            $scope.yourTurn = false
+            $scope.yourTurn = true
+                // $scope.timer = new timer(function() {
+                //         Socket.emit('passedTurn')
+                //         $scope.yourTurn = false
+                //         $scope.$digest()
+                //     }, 20000)
+                // $scope.timerChecker = $interval(function() {
+                //   $scope.timeRemaining = $scope.timer.getTimeLeft()
+                //   $scope.$digest()
+                // }, 1000)
             $scope.$digest()
-          }, 20000)
-          // $scope.timerChecker = $interval(function() {
-          //   $scope.timeRemaining = $scope.timer.getTimeLeft()
-          //   $scope.$digest()
-          // }, 1000)
-          $scope.$digest()
         })
     })
 
-    function timer(callback, delay) {
-        var id, started, remaining = delay, running
+    // function timer(callback, delay) {
+    //     var id, started, remaining = delay,
+    //         running
 
-        this.start = function() {
-            running = true
-            started = new Date()
-            id = setTimeout(callback, remaining)
-        }
+    //     this.start = function() {
+    //         running = true
+    //         started = new Date()
+    //         id = setTimeout(callback, remaining)
+    //     }
 
-        this.pause = function() {
-            running = false
-            clearTimeout(id)
-            remaining -= new Date() - started
-        }
+    //     this.pause = function() {
+    //         running = false
+    //         clearTimeout(id)
+    //         remaining -= new Date() - started
+    //     }
 
-        this.getTimeLeft = function() {
-            if (running) {
-                this.pause()
-                this.start()
-            }
+    //     this.getTimeLeft = function() {
+    //         if (running) {
+    //             this.pause()
+    //             this.start()
+    //         }
 
-            return remaining
-        }
+    //         return remaining
+    //     }
 
-        this.getStateRunning = function() {
-            return running
-        }
+    //     this.getStateRunning = function() {
+    //         return running
+    //     }
 
-        this.start()
-    }
+    //     this.start()
+    // }
 
     function chkLine(a, b, c, d) {
         // Check first cell non-zero and all cells match
@@ -173,9 +225,9 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
     }
 
     $scope.decline = function() {
-            Socket.emit('decline')
-            $scope.askNew = false
-        }
+        Socket.emit('decline')
+        $scope.askNew = false
+    }
 
     $scope.resetGame = function() {
         $scope.redrawsRemaining = 3;
@@ -199,55 +251,80 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
     $scope.playerNumber = undefined
 
 
-      $scope.submit = WordFactory.submitWord;
+    $scope.submit = WordFactory.submitWord;
 
-      $scope.pot = [];
+    $scope.pot = [];
 
-      $scope.createPot = WordFactory.createPot
+    $scope.createPot = WordFactory.createPot
 
-      $scope.shuffle = function() {
+    $scope.shuffle = function() {
         $scope.pot = WordFactory.shuffle($scope.pot);
-      }
+    }
 
-      $scope.redraw = function() {
+    $scope.redraw = function() {
         if ($scope.redrawsRemaining) {
-        $scope.redrawsRemaining--
-        console.log($scope.redrawsRemaining);
-          $scope.pot = [];
-          WordFactory.createPot($scope.pot);
+            $scope.redrawsRemaining--
+                console.log($scope.redrawsRemaining);
+            $scope.pot = [];
+            WordFactory.createPot($scope.pot);
+            Socket.emit('redraw', $scope.playerNumber)
+            Socket.emit('pot', {
+                playerNum: $scope.playerNumber,
+                pot: $scope.pot
+            })
         }
-      };
+    };
+
+
+    $scope.spec = function() {
+        $scope.enableBoard = true
+        $scope.spectating = true
+    }
+
+    function startGame() {
+        $scope.enableBoard = true;
+        WordFactory.createPot($scope.pot);
+    }
 
     //set after player has join the room, make sure room is not full
     $scope.joinGame = function() {
         console.log("cool", $scope.redrawsRemaining)
-        WordFactory.createPot($scope.pot);
-        $scope.enableBoard = true;
-        roomFactory.whichPlayer(window.location.pathname)
+        roomFactory.whichPlayer($scope.roomName)
             .then(function(data) {
                 // console.log('it happened')
                 if (data === 'room is full') {
                     //do nothing, but tell them room is full
-                    console.log('room is full')
+                    $scope.messages = 'room is full'
+                    setTimeout(function() {
+                        $scope.messages = undefined
+                        $scope.showNewGame = true
+                        $scope.$digest()
+                    }, 5000)
                 } else if (data === 'Player 1') {
+                    startGame()
                     $scope.playerNumber = 0
                     $scope.player = $scope.players[$scope.playerNumber]
+                    $scope.roomInfo.player1 = $scope.user.id;
                     $scope.yourTurn = true
-                    $scope.timer = new timer(function() {
-                      Socket.emit('passedTurn')
-                      $scope.yourTurn = false
-                      $scope.$digest()
-                    }, 20000)
-                    // $scope.timerChecker = $interval(function() {
-                    //   $scope.timeRemaining = $scope.timer.getTimeLeft()
-                    //   $scope.$digest()
-                    // }, 1000)
+                    setTimeout(Socket.emit('reqBoardData'), 10000)
+                        // $scope.timer = new timer(function() {
+                        //         Socket.emit('passedTurn')
+                        //         $scope.yourTurn = false
+                        //         $scope.$digest()
+                        //     }, 20000)
+                        // $scope.timerChecker = $interval(function() {
+                        //   $scope.timeRemaining = $scope.timer.getTimeLeft()
+                        //   $scope.$digest()
+                        // }, 1000)
                     console.log($scope.player.token)
                     console.log($scope.playerNumber)
                 } else if (data === 'Player 2') {
+                    startGame()
                     $scope.playerNumber = 1
                     $scope.player = $scope.players[$scope.playerNumber]
-                    // $scope.$digest()
+                    $scope.roomInfo.player2 = $scope.user.id;
+                    setTimeout(Socket.emit('reqBoardData'), 10000)
+                        // $scope.$digest()
                     console.log($scope.player.token)
                     console.log($scope.playerNumber)
                 }
@@ -261,9 +338,13 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
     //word controller should call this, if user is successful coming up with word
     $scope.claimCell = function() {
-        $scope.timer = undefined
+        // $scope.timer = undefined
         // $scope.timerChecker = undefined
         $scope.yourTurn = false
+        Socket.emit('pot', {
+            playerNum: $scope.playerNumber,
+            pot: $scope.pot
+        })
         let winningWord = GameFactory.getWord()
         console.log('claimed word: ', winningWord)
         let cell = $scope.getCell($scope.selectedCell.x, $scope.selectedCell.y)

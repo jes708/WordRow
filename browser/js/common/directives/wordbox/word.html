@@ -1,4 +1,4 @@
-<section id="word">
+<section id="word" ng-hide="spectating">
     <form name="anagram" ng-submit="verify(pot, word.toLowerCase())">
       <input id="type-word" type="text" ng-model="word"/>
       <button ng-disabled="!selectedCell && !yourTurn" type="submit">PLAY</button>

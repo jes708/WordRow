@@ -11,50 +11,79 @@ module.exports = function(server) {
 
     // console.log(io)
 
-    var onlineplayers = []
     io.on('connection', function(socket) {
 
         // Now have access to socket, wowzers!
         console.log('A new client has connected!');
         console.log(socket.id);
 
-        var roomName;
-        socket.on('joinRoom', function (room) {
-          roomName = room;
-          socket.join(roomName);
-          // if (!data[roomName]) {
-          //   data[roomName] = [];
-          // } else {
-          //   socket.emit('board', data[roomName]);
-          // }
-          // console.log('above is room sharing data if we decide to save')
-          io.sockets.in(roomName).emit('roomData', {
-            count: io.sockets.adapter.rooms[roomName]
-          })
+        let roomName;
+
+        let addData = function(move) {
+            if (!data[roomName]) data[roomName] = [];
+            data[roomName].push(move)
+        }
+        socket.on('joinRoom', function(room) {
+            roomName = room;
+            socket.join(roomName);
+            // if (!data[roomName]) {
+            //   data[roomName] = [];
+            // } else {
+            //   socket.emit('board', data[roomName]);
+            // }
+            // console.log('above is room sharing data if we decide to save')
+            io.sockets.in(roomName).emit('roomData', {
+                count: io.sockets.adapter.rooms[roomName]
+            })
         });
 
-        socket.on('passedTurn', function(){
-          socket.broadcast.to(roomName).emit('passedTurnC')
+        socket.on('redraw', function(playerNum) {
+            data[roomName].push({
+                playerNum: playerNum,
+                redraw: 1
+            })
         })
 
-        socket.on('claim', function(spotData){
-          socket.broadcast.to(roomName).emit('claimC', spotData)
+        socket.on('pot', function(potInfo) {
+            if (!data[roomName]) data[roomName] = [];
+            data[roomName].push({
+                playerNum: potInfo.playerNum,
+                pot: potInfo.pot
+            })
         })
 
-        socket.on('claimEnd', function(spotData){
-          socket.broadcast.to(roomName).emit('claimEndC', spotData)
+        socket.on('passedTurn', function() {
+            socket.broadcast.to(roomName).emit('passedTurnC')
         })
 
-        socket.on('accept', function(){
-          socket.broadcast.to(roomName).emit('acceptC')
+        socket.on('claim', function(spotData) {
+            addData(spotData)
+            socket.broadcast.to(roomName).emit('claimC', spotData)
         })
 
-        socket.on('decline', function(){
-          socket.broadcast.to(roomName).emit('declineC')
+        socket.on('claimEnd', function(spotData) {
+            addData(spotData)
+            socket.broadcast.to(roomName).emit('claimEndC', spotData)
         })
 
-        socket.on('reqNewGame', function(){
-          socket.broadcast.to(roomName).emit('reqNewGameC')
+        socket.on('reqBoardData', function() {
+            if (!data[roomName]) data[roomName] = [];
+            console.log('player asked for game data')
+            console.log(data[roomName])
+            socket.emit('boardData', data[roomName])
+        })
+
+        socket.on('accept', function() {
+            data[roomName] = []
+            socket.broadcast.to(roomName).emit('acceptC')
+        })
+
+        socket.on('decline', function() {
+            socket.broadcast.to(roomName).emit('declineC')
+        })
+
+        socket.on('reqNewGame', function() {
+            socket.broadcast.to(roomName).emit('reqNewGameC')
         })
 
         socket.on('disconnect', function() {
