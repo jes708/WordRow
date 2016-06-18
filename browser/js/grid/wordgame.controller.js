@@ -1,4 +1,4 @@
-app.controller("WordGameController", function($scope, Socket, GameFactory, roomFactory, WordFactory) {
+app.controller("WordGameController", function($interval, $scope, Socket, GameFactory, roomFactory, WordFactory) {
     GridGameHelp.ScopeDecorator($scope);
 
     Socket.on('connect', function() {
@@ -32,6 +32,10 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
               $scope.yourTurn = false
               $scope.$digest()
             }, 20000)
+            // $scope.timerChecker = $interval(function() {
+            //   $scope.timeRemaining = $scope.timer.getTimeLeft()
+            //   $scope.$digest()
+            // }, 1000)
             console.log($scope.yourTurn)
             $scope.$digest()
         })
@@ -72,6 +76,10 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
             $scope.yourTurn = false
             $scope.$digest()
           }, 20000)
+          // $scope.timerChecker = $interval(function() {
+          //   $scope.timeRemaining = $scope.timer.getTimeLeft()
+          //   $scope.$digest()
+          // }, 1000)
           $scope.$digest()
         })
     })
@@ -142,6 +150,10 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         return false;
     }
 
+    $scope.timeRemaining = undefined
+
+    // $scope.timerChecker = undefined
+
     $scope.yourTurn = false
 
     $scope.showNewGame = true
@@ -211,6 +223,10 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
                       $scope.yourTurn = false
                       $scope.$digest()
                     }, 20000)
+                    // $scope.timerChecker = $interval(function() {
+                    //   $scope.timeRemaining = $scope.timer.getTimeLeft()
+                    //   $scope.$digest()
+                    // }, 1000)
                     console.log($scope.player.token)
                     console.log($scope.playerNumber)
                 } else if (data === 'Player 2') {
@@ -231,6 +247,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
     //word controller should call this, if user is successful coming up with word
     $scope.claimCell = function() {
         $scope.timer = undefined
+        // $scope.timerChecker = undefined
         $scope.yourTurn = false
         let winningWord = GameFactory.getWord()
         console.log('claimed word: ', winningWord)
