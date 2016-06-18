@@ -290,7 +290,7 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
     $scope.joinGame = function() {
         console.log("cool", $scope.redrawsRemaining)
         if($scope.roomName === '') {
-            javascript:history.go(0)
+            history.go(0)
         }
         roomFactory.whichPlayer($scope.roomName)
             .then(function(data) {
