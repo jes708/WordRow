@@ -4,17 +4,20 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 module.exports = function (app, db) {
 
-    var User = db.define('user');
+    var User = db.model('user');
 
     var facebookConfig = app.getValue('env').FACEBOOK;
 
     var facebookCredentials = {
         clientID: facebookConfig.clientID,
         clientSecret: facebookConfig.clientSecret,
-        callbackURL: facebookConfig.callbackURL
+        callbackURL: facebookConfig.callbackURL,
+        profileFields: ["id", "emails", "displayName"]
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
+
+        console.log(profile);
 
         User.findOne({
                 where: {
@@ -26,7 +29,9 @@ module.exports = function (app, db) {
                     return user;
                 } else {
                     return User.create({
-                        facebook_id: profile.id
+                        facebook_id: profile.id,
+                        username: profile.displayName,
+                        email: profile.emails ? profile.emails[0].value : [profile.username , 'no-email.com'].join('@')
                     });
                 }
             })
@@ -42,7 +47,7 @@ module.exports = function (app, db) {
 
     passport.use(new FacebookStrategy(facebookCredentials, verifyCallback));
 
-    app.get('/auth/facebook', passport.authenticate('facebook'));
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
 
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {failureRedirect: '/login'}),
