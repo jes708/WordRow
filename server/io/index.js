@@ -33,6 +33,10 @@ module.exports = function(server) {
           })
         });
 
+        socket.on('passedTurn', function(){
+          socket.broadcast.to(roomName).emit('passedTurnC')
+        })
+
         socket.on('claim', function(spotData){
           socket.broadcast.to(roomName).emit('claimC', spotData)
         })
