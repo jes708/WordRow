@@ -19,6 +19,10 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
             }
         }
 
+        if($scope.roomName === '') {
+            history.go(0)
+        }
+
         roomFactory.getRoom($scope.roomName)
             .then(function(roomInfo) {
                 $scope.roomInfo = roomInfo
@@ -289,9 +293,6 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
     //set after player has join the room, make sure room is not full
     $scope.joinGame = function() {
         console.log("cool", $scope.redrawsRemaining)
-        if($scope.roomName === '') {
-            history.go(0)
-        }
         roomFactory.whichPlayer($scope.roomName)
             .then(function(data) {
                 // console.log('it happened')
