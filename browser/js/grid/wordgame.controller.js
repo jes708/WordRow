@@ -1,4 +1,4 @@
-app.controller("WordGameController", function($interval, $scope, Socket, GameFactory, roomFactory, WordFactory) {
+app.controller("WordGameController", function($scope, Socket, GameFactory, roomFactory, WordFactory) {
     GridGameHelp.ScopeDecorator($scope);
 
     Socket.on('connect', function() {
