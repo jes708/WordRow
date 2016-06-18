@@ -86,6 +86,15 @@
 
         };
 
+        this.signup = function (info) {
+            return $http.post('/signup', info)
+                .then(this.login(info))
+                .catch(function () {
+                    return $q.reject({ message: 'Invalid signup credentials.' });
+                });
+        };
+
+
         this.login = function (credentials) {
             return $http.post('/login', credentials)
                 .then(onSuccessfulLogin)

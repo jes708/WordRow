@@ -17,17 +17,20 @@ module.exports = function (app, db) {
 
     var createNewUser = function (token, tokenSecret, profile) {
         return User.create({
-            twitter_id: profile.id
+            twitter_id: profile.id,
+            username: profile.displayName,
+            email: profile.emails ? profile.emails[0].value : [profile.username , 'no-email.com'].join('@')
         });
     };
 
     var verifyCallback = function (token, tokenSecret, profile, done) {
 
-        UserModel.findOne({
+        User.findOne({
             where: {
                 twitter_id: profile.id
             }
-        }).exec()
+        })
+        //.exec()
             .then(function (user) {
                 if (user) { // If a user with this twitter id already exists.
                     return user;

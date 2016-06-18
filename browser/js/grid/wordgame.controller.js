@@ -31,7 +31,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
               Socket.emit('passedTurn')
               $scope.yourTurn = false
               $scope.$digest()
-            }, 20000)
+            }, 60000)
             // $scope.timerChecker = $interval(function() {
             //   $scope.timeRemaining = $scope.timer.getTimeLeft()
             //   $scope.$digest()
@@ -75,7 +75,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
             Socket.emit('passedTurn')
             $scope.yourTurn = false
             $scope.$digest()
-          }, 20000)
+          }, 60000)
           // $scope.timerChecker = $interval(function() {
           //   $scope.timeRemaining = $scope.timer.getTimeLeft()
           //   $scope.$digest()
@@ -237,7 +237,7 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
                       Socket.emit('passedTurn')
                       $scope.yourTurn = false
                       $scope.$digest()
-                    }, 20000)
+                    }, 60000)
                     // $scope.timerChecker = $interval(function() {
                     //   $scope.timeRemaining = $scope.timer.getTimeLeft()
                     //   $scope.$digest()
