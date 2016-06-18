@@ -1,4 +1,4 @@
-app.controller("WordGameController", function(UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
+app.controller("WordGameController", function($state, $stateParams, UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
     GridGameHelp.ScopeDecorator($scope);
 
     UserFactory.getId()
@@ -6,7 +6,7 @@ app.controller("WordGameController", function(UserFactory, $scope, Socket, GameF
             console.log('here', user) })
 
     Socket.on('connect', function() {
-        console.log(window.location.pathname)
+        console.log(window.pathname)
 
         $scope.roomName = location()
 
@@ -289,6 +289,9 @@ app.controller("WordGameController", function(UserFactory, $scope, Socket, GameF
     //set after player has join the room, make sure room is not full
     $scope.joinGame = function() {
         console.log("cool", $scope.redrawsRemaining)
+        if($scope.roomName === '') {
+            history.go(0)
+        }
         roomFactory.whichPlayer($scope.roomName)
             .then(function(data) {
                 // console.log('it happened')
@@ -306,7 +309,7 @@ app.controller("WordGameController", function(UserFactory, $scope, Socket, GameF
                     $scope.player = $scope.players[$scope.playerNumber]
                     $scope.roomInfo.player1 = $scope.user.id;
                     $scope.yourTurn = true
-                    setTimeout(Socket.emit('reqBoardData'), 10000)
+                    Socket.emit('reqBoardData')
                         // $scope.timer = new timer(function() {
                         //         Socket.emit('passedTurn')
                         //         $scope.yourTurn = false
@@ -323,7 +326,7 @@ app.controller("WordGameController", function(UserFactory, $scope, Socket, GameF
                     $scope.playerNumber = 1
                     $scope.player = $scope.players[$scope.playerNumber]
                     $scope.roomInfo.player2 = $scope.user.id;
-                    setTimeout(Socket.emit('reqBoardData'), 10000)
+                    Socket.emit('reqBoardData')
                         // $scope.$digest()
                     console.log($scope.player.token)
                     console.log($scope.playerNumber)
