@@ -117,15 +117,6 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
             Socket.emit('decline')
             $scope.askNew = false
         }
-        // $scope.processClick = function(cell){
-        //   if(processSideEffects(cell)){
-        //     $scope.placeToken(cell);
-        //     $scope.passPlay()
-        //     $scope.activePlayer().addPoints(1)
-        //     checkGameCompletion();
-        //   }
-        //   // game logic for check word
-        // }
 
     $scope.resetGame = function() {
         $scope.redrawsRemaining = 3;
@@ -154,6 +145,10 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
 
       $scope.createPot = WordFactory.createPot
 
+      $scope.shuffle = function() {
+        $scope.pot = WordFactory.shuffle($scope.pot);
+      }
+
       $scope.redraw = function() {
         if ($scope.redrawsRemaining) {
         $scope.redrawsRemaining--
@@ -163,31 +158,30 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         }
       };
 
-      $scope.verify = function(pot, word) {
-        if ($scope.gameStatus) return;
-        if (!$scope.yourTurn) return;
-        let steal = GameFactory.getSteal();
-        if (WordFactory.verify(pot, word, steal)) {
+      // $scope.verify = function(pot, word) {
+      //   if ($scope.gameStatus) return;
+      //   if (!$scope.yourTurn) return;
+      //   let steal = GameFactory.getSteal();
+      //   if (WordFactory.verify(pot, word, steal)) {
 
-          WordFactory.submitWord(word)
-          .then(function(wordRes) {
-            if (wordRes.data) {
-              console.log('word res: ', wordRes.data.word)
-              WordFactory.endTurn(pot, word, steal);
-              WordFactory.createPot(pot);
-              GameFactory.setWord(wordRes.data.word)
-              $scope.word = ''
-              console.log('your turn: ', $scope.yourTurn)
-              $scope.claimCell();
-            } else {
-              $scope.message = "Invalid word";
-            }
-          });
+      //     WordFactory.submitWord(word)
+      //     .then(function(wordRes) {
+      //       if (wordRes.data) {
+      //         console.log('word res: ', wordRes.data.word)
+      //         WordFactory.endTurn(pot, word, steal);
+      //         WordFactory.createPot(pot);
+      //         GameFactory.setWord(wordRes.data.word)
+      //         console.log("HELLO", $scope.word);
+      //         $scope.claimCell();
+      //       } else {
+      //         $scope.message = "Invalid word";
+      //       }
+      //     });
 
-        } else {
-          $scope.message = "Invalid letters";
-        }
-      };
+      //   } else {
+      //     $scope.message = "Invalid letters";
+      //   }
+      // };
 
 
     //set after player has join the room, make sure room is not full
