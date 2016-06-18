@@ -1,8 +1,3 @@
-body{
-  margin-top: 20px;
-  background-color: #0089ff;
-}
-
 .gameContainer{
   border: 5px solid;
   display: block;
@@ -17,6 +12,7 @@ body{
   background-color: white;
   width: 192px;
   height: 60px;
+  line-height: 60px;
   float: left;
   cursor: pointer;
 }
@@ -45,15 +41,46 @@ body{
 }
 
 .p2Token{
-  background-color: #6261b9;
+  background: rgba(113,73,222,1);
+  background: -moz-linear-gradient(-45deg, rgba(113,73,222,1) 0%, rgba(68,32,212,1) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(113,73,222,1)), color-stop(100%, rgba(68,32,212,1)));
+  background: -webkit-linear-gradient(-45deg, rgba(113,73,222,1) 0%, rgba(68,32,212,1) 100%);
+  background: -o-linear-gradient(-45deg, rgba(113,73,222,1) 0%, rgba(68,32,212,1) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(113,73,222,1) 0%, rgba(68,32,212,1) 100%);
+  background: linear-gradient(135deg, rgba(113,73,222,1) 0%, rgba(68,32,212,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7149de', endColorstr='#4420d4', GradientType=1 );
   color: black;
 }
 
 .p1Token{
-  background-color: #ca4848;
+  background: rgba(222,73,73,1);
+  background: -moz-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(222,73,73,1)), color-stop(100%, rgba(212,30,30,1)));
+  background: -webkit-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
+  background: -o-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
+  background: linear-gradient(135deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de4949', endColorstr='#d41e1e', GradientType=1 );
   color: black;
 }
 
 .selected{
-  border: 5px ridge #fdff63;
+  box-shadow: inset 0px 0px 5px 4px #6bd6ff, inset 0px 0px 0px 5px #092644;
 }
+
+.token {
+    color: white;
+    text-align: center;
+    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.48),
+                 0px 1px 0px rgba(0, 0, 0, 0.35),
+                 1px 0px 0px rgba(0, 0, 0, 0.35),
+                 0px -1px 0px rgba(0, 0, 0, 0.35),
+                 -1px 0px 0px rgba(0, 0, 0, 0.35),
+                 1px 1px 0px rgba(0, 0, 0, 0.35),
+                 -1px -1px 0px rgba(0, 0, 0, 0.43),
+                 -1px 1px 0px rgba(0, 0, 0, 0.31),
+                 1px -1px 0px rgba(0, 0, 0, 0.35),
+                 0px 1px 3px black;
+    font-size: 20px;
+    font-family: 'Roboto';
+    font-weight: 700;}
