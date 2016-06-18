@@ -10,6 +10,8 @@ router.post('/', function(req, res, next) {
     if (req.user) {
         if (req.body.room === '/') {
             req.body.room = 'root'
+        } else {
+           req.body.room = req.body.room.match(/\/(\d*\w*)\/?/i)[1]
         }
         //need more logic for regex
         return Room.findOrCreate({
