@@ -79,6 +79,15 @@ app.factory('WordFactory', function ($http) {
     }
   };
 
+  WordFactory.shuffle = function(pot) {
+    var newPot = [], i;
+    while (pot.length) {
+      i = Math.floor(Math.random() * pot.length);
+      newPot.push(pot.splice(i, 1)[0])
+    }
+    return newPot;
+  }
+
   WordFactory.verify = function(pot, word, steal) {
     var stealCopy = steal || "";
     if (word.length <= stealCopy.length) return false;

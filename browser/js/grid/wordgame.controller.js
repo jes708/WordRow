@@ -164,17 +164,9 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
             Socket.emit('decline')
             $scope.askNew = false
         }
-        // $scope.processClick = function(cell){
-        //   if(processSideEffects(cell)){
-        //     $scope.placeToken(cell);
-        //     $scope.passPlay()
-        //     $scope.activePlayer().addPoints(1)
-        //     checkGameCompletion();
-        //   }
-        //   // game logic for check word
-        // }
 
     $scope.resetGame = function() {
+        $scope.redrawsRemaining = 3;
         for (var i = 0; i < $scope.gameBoard.rows.length; i++) {
             for (var j = 0; j < $scope.gameBoard.rows[i].length; j++) {
                 let cell = $scope.getCell(i, j)
@@ -190,11 +182,34 @@ app.controller("WordGameController", function($scope, Socket, GameFactory, roomF
         Socket.emit('reqNewGame')
     }
 
+    $scope.redrawsRemaining = 3;
 
     $scope.playerNumber = undefined
 
+
+      $scope.submit = WordFactory.submitWord;
+
+      $scope.pot = [];
+
+      $scope.createPot = WordFactory.createPot
+
+      $scope.shuffle = function() {
+        $scope.pot = WordFactory.shuffle($scope.pot);
+      }
+
+      $scope.redraw = function() {
+        if ($scope.redrawsRemaining) {
+        $scope.redrawsRemaining--
+        console.log($scope.redrawsRemaining);
+          $scope.pot = [];
+          WordFactory.createPot($scope.pot);
+        }
+      };
+
     //set after player has join the room, make sure room is not full
     $scope.joinGame = function() {
+        console.log("cool", $scope.redrawsRemaining)
+        WordFactory.createPot($scope.pot);
         $scope.enableBoard = true;
         roomFactory.whichPlayer(window.location.pathname)
             .then(function(data) {
