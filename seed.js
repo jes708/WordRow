@@ -38,6 +38,7 @@ var seedUsers = function () {
             password: 'potus'
         },
         {
+            username: 'Jan',
             email: 'jan@jan.com',
             password: 'jan'
         }
