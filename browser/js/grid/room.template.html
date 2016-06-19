@@ -12,8 +12,8 @@
        <!-- <select ng-model='firstPlayer' ng-options='player.name for player in players'></select> -->
        <button ng-if="enableBoard" class="new-game btn btn-sm btn-primary" ng-show="showNewGame && !spectating" ng-click='newGame()' />New Game</button>
        </div>
-       <br>
        <span ng-if="gameStatus">{{ gameStatus }}</span>
+       <br>
        <span ng-show="roomInfo.player1 != user.id && roomInfo.player2 != user.id">
           <button ng-hide="spectating" class="btn-primary btn join-room" ng-click="spec()">Spectate</button>
        </span>
