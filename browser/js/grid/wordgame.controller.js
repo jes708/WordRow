@@ -1,5 +1,5 @@
-app.controller("WordGameController", function($state, $stateParams, UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
-    GridGameHelp.ScopeDecorator($scope);
+app.controller("WordGameController", function(GridGameFactory,$state, $stateParams, UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
+    GridGameFactory.ScopeDecorator($scope);
 
     UserFactory.getId()
         .then(user => $scope.user = user)
@@ -230,7 +230,6 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
         WordFactory.createPot($scope.pot);
     }
 
-    //set after player has join the room, make sure room is not full
     $scope.joinGame = function() {
         roomFactory.whichPlayer($scope.roomName)
             .then(function(data) {
