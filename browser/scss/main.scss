@@ -2,8 +2,28 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #fdfdfd;
+body{
+  background: rgba(73,155,234,1);
+  background: -moz-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(73,155,234,1)), color-stop(100%, rgba(32,124,229,1)));
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
+  background: -o-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
+  background: -ms-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
+  background: radial-gradient(ellipse at center, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#499bea', endColorstr='#207ce5', GradientType=1 );
+  height: 100%;
+}
+
+html {
+  height:100%;
+}
+
+span {
+  font-family: "oxygen";
+}
+
+.new-game {
+  float:right;
 }
 
 @mixin clearfix {
@@ -14,23 +34,117 @@ body {
   }
 }
 
+#rules {
+    background: white;
+    margin: 0 auto;
+    display: table;
+    padding: 15px;
+    border-radius: 8px;
+    width: 700px;
+}
+
+.center {
+    text-align: center;
+}
+
 #main {
   padding-top: 60px;
   margin: 0 auto;
 }
 
 #pot {
-  font-family: 'Fredoka One';
-  font-size: 35px;
+  font-family: 'Fredoka One', sans-serif;
   color: white;
-  text-shadow: 3px 2px 0px rgba(0, 0, 0, 0.39);
+  text-shadow: 1px 3px 2px rgba(0, 0, 0, 0.52);
+  font-size: 63px;
+  letter-spacing: 15px;
+  text-align: center;
 
   span {
     margin-right: 8px;
-    border-bottom: 3px solid rgba(0, 0, 0, 0.25);
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.46);
   }
 
+}
+
+button.join-room {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-top: -15px;
+}
+
+div.submitter {
+    width: 375px;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 20px;
+
+    input {
+      border-bottom-right-radius: 0px;
+      border-top-right-radius: 0px;
+    }
+
+    button {
+      border-bottom-left-radius: 0px;
+      border-top-left-radius: 0px;      
+    }
+}
+
+#pot-buttons {
+  margin: 0 auto;
+  display: table;
+}
+
+.shuffle {
+    margin-right: 25px;
+}
+
+.fixed-message {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 22%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 2px 3px black;
+    text-align: center;
+    padding: 15px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #2fa9ff;
+    border-color: rgba(0, 0, 0, 0.22);
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #2885d6;
+    border-color: #204d74;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+    color: #fff;
+    background-color: #2885d6;
+    border-color: #122b40;
+}
+
+.btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #1c496f;
+    border-color: #204d74;
+}
+
+.btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+    color: #fff;
+    background-color: #2885d6;
+    border-color: #122b40;
+}
+
+button:focus {
+  outline: 0;
 }
 
 @import 'directives/main';

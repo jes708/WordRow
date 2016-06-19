@@ -1,12 +1,15 @@
 <section id="word" ng-hide="spectating">
-    <form name="anagram" ng-submit="verify(pot, word.toLowerCase())">
-      <input id="type-word" type="text" ng-model="word"/>
-      <button ng-disabled="!selectedCell && !yourTurn" type="submit">PLAY</button>
-    </form>
     <div id="pot">
     <span ng-repeat="letter in pot track by $index">{{letter.toUpperCase()}}</span>
     </div>
-    <button ng-click="shuffle()">SHUFFLE</button>
-    <button ng-click="redraw(pot)">REDRAW</button>
-    <p>Redraws remaining: {{redrawsRemaining}}</p>
+    <div id="pot-buttons">
+        <button ng-click="shuffle()" class="shuffle btn-primary btn">SHUFFLE</button>
+        <button ng-click="redraw(pot)" class="btn-primary btn">REDRAW | {{redrawsRemaining}}</button>
+    </div>
+    <form name="anagram" class="form-group" ng-submit="verify(pot, word.toLowerCase())">
+    <div class="submitter">
+      <input autocomplete="off" id="type-word" type="text" class="form-control input-lg" ng-model="word"/>
+      <button ng-disabled="!selectedCell && !yourTurn" class="btn-primary btn btn-lg" type="submit">PLAY</button>
+    </div>
+    </form>
 </section>
