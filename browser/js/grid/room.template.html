@@ -5,22 +5,23 @@
            <span class='{{player.token}}Token'>{{player.name}}</span>
      </li>
     </ul>
--->
-       <span class='{{player.token}}Token' ng-if="yourTurn && enableBoard && !spectating">Your turn</span>
-       <span class='{{player.token}}Token' ng-if="!yourTurn && enableBoard && !spectating">Waiting on your oppenent</span>
+-->    <div class="game-bottom">
+       <span ng-if="yourTurn && enableBoard && !spectating">Your turn</span>
+       <span ng-if="!yourTurn && enableBoard && !spectating">Waiting for your oppenent...</span>
        <!-- <span>Time remaining: {{timeRemaing}}</span> -->
        <!-- <select ng-model='firstPlayer' ng-options='player.name for player in players'></select> -->
-       <span ng-show="messages || !spectating">{{messages}}</span>
-       <div ng-show="askNew && !spectating && enableBoard">
-           New game requested
-           <button ng-click="accept()">Accept</button>
-           <button ng-click="decline()">Decline</button>
+       <button ng-if="enableBoard" class="new-game btn btn-sm btn-primary" ng-show="showNewGame && !spectating" ng-click='newGame()' />New Game</button>
        </div>
-       <button ng-if="enableBoard" ng-show="showNewGame && !spectating" ng-click='newGame()' />New Game</button>
-       {{ gameStatus }}
        <br>
+       <span ng-if="gameStatus">{{ gameStatus }}</span>
        <span ng-show="roomInfo.player1 != user.id && roomInfo.player2 != user.id">
-          <button ng-hide="spectating" ng-click="spec()">Spectate</button>
+          <button ng-hide="spectating" class="btn-primary btn join-room" ng-click="spec()">Spectate</button>
        </span>
-       <button ng-hide="spectating || playerNumber || playerNumber == 0 || (roomInfo.player1 != user.id && roomInfo.player2 != user.id && roomInfo.player1 != null && roomInfo.player2 != null)" ng-click="joinGame()">Join room</button>
+       <button class="btn-primary btn join-room" ng-hide="spectating || playerNumber || playerNumber == 0 || (roomInfo.player1 != user.id && roomInfo.player2 != user.id && roomInfo.player1 != null && roomInfo.player2 != null)" ng-click="joinGame()">Join room</button>
    </div>
+       <div ng-show="messages && !spectating" class="fixed-message"><span>{{messages}}</span></div>
+       <div class="fixed-message" ng-show="askNew && !spectating && enableBoard">
+           <h4>New game requested</h4>
+           <button class="btn btn-primary" ng-click="accept()">Accept</button>
+           <button class="btn btn-primary" ng-click="decline()">Decline</button>
+       </div>

@@ -1,14 +1,24 @@
 .gameContainer{
-  border: 5px solid;
+  border: 1px solid rgba(0, 0, 0, 0.34);
+  border-radius: 8px;
   display: block;
   width: 800px;
   margin: auto;
   padding: 10px;
-  background-color: #dddddd;
+    background: rgba(242,163,67,1);
+    background: -moz-radial-gradient(center, ellipse cover, rgba(242,163,67,1) 0%, rgba(219,131,24,1) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(242,163,67,1)), color-stop(100%, rgba(219,131,24,1)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(242,163,67,1) 0%, rgba(219,131,24,1) 100%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(242,163,67,1) 0%, rgba(219,131,24,1) 100%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(242,163,67,1) 0%, rgba(219,131,24,1) 100%);
+    background: radial-gradient(ellipse at center, rgba(242,163,67,1) 0%, rgba(219,131,24,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2a343', endColorstr='#db8318', GradientType=1 );
+    box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.4), inset 0px 0px 8px 2px #a77c04;
 }
 
 .gameCell{
-  border: 1px solid;
+  border-right: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
   background-color: white;
   width: 192px;
   height: 60px;
@@ -36,10 +46,6 @@
   content: ' ';
 }
 
-.neutralToken{
-  background-color: darkgreen;
-}
-
 .p2Token{
   background: rgba(113,73,222,1);
   background: -moz-linear-gradient(-45deg, rgba(113,73,222,1) 0%, rgba(68,32,212,1) 100%);
@@ -53,13 +59,13 @@
 }
 
 .p1Token{
-  background: rgba(222,73,73,1);
-  background: -moz-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
-  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(222,73,73,1)), color-stop(100%, rgba(212,30,30,1)));
-  background: -webkit-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
-  background: -o-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
-  background: -ms-linear-gradient(-45deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
-  background: linear-gradient(135deg, rgba(222,73,73,1) 0%, rgba(212,30,30,1) 100%);
+  background: #ea2323;
+  background: -moz-linear-gradient(-45deg, #ea2323 0%, #da0000 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, #ea2323), color-stop(100%, #da0000));
+  background: -webkit-linear-gradient(-45deg, #ea2323 0%, #da0000 100%);
+  background: -o-linear-gradient(-45deg, #ea2323 0%, #da0000 100%);
+  background: -ms-linear-gradient(-45deg, #ea2323 0%, #da0000 100%);
+  background: linear-gradient(135deg, #ea2323 0%, #da0000 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de4949', endColorstr='#d41e1e', GradientType=1 );
   color: black;
 }
@@ -80,7 +86,7 @@
                  -1px -1px 0px rgba(0, 0, 0, 0.43),
                  -1px 1px 0px rgba(0, 0, 0, 0.31),
                  1px -1px 0px rgba(0, 0, 0, 0.35),
-                 0px 1px 3px black;
+                 0px 1px 1px rgba(0, 0, 0, 0.43);
     font-size: 20px;
-    font-family: 'Roboto';
+    font-family: 'Oxygen';
     font-weight: 700;}
