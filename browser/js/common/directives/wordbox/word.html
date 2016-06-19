@@ -8,7 +8,7 @@
     </div>
     <form name="anagram" class="form-group" ng-submit="verify(pot, word.toLowerCase())">
     <div class="submitter">
-      <input id="type-word" type="text" class="form-control input-lg" ng-model="word"/>
+      <input autocomplete="off" id="type-word" type="text" class="form-control input-lg" ng-model="word"/>
       <button ng-disabled="!selectedCell && !yourTurn" class="btn-primary btn btn-lg" type="submit">PLAY</button>
     </div>
     </form>
