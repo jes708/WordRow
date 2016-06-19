@@ -118,6 +118,7 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
         Socket.on('claimEndC', function(spotData) {
             $scope.gameEnd = true
             $scope.yourTurn = true
+            $scope.otherCell = undefined
             $scope.messages = 'You have lost'
             updateBoard(spotData)
             $scope.$digest()
