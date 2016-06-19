@@ -31,15 +31,19 @@ router.post('/', function(req, res, next) {
             })
             .then(function(room) {
                 room = room[0]
-                if (!room.player1 || room.player1 === req.user.id) {
+                console.log("asdfghjklzxcvbnm", room)
+                if (!room.player1Id || room.player1Id === req.user.id) {
+                    console.log("PLayer1ID")
                     return room.update({
-                        player1: req.user.id
+                        player1Id: req.user.id
                     }).then(something => 'Player 1')
-                } else if (!room.player2 || room.player2 === req.user.id) {
+                } else if (!room.player2Id || room.player2Id === req.user.id) {
+                    console.log("PLayer2ID")
                     return room.update({
-                        player2: req.user.id
+                        player2Id: req.user.id
                     }).then(somethingelse => 'Player 2')
                 } else {
+                    console.log("resolve")
                     return new Promise(resolve => resolve('room is full'))
                 }
             }).then(function(room) {

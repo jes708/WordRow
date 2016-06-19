@@ -10,14 +10,18 @@
        <span ng-if="!yourTurn && enableBoard && !spectating">Waiting for your oppenent...</span>
        <!-- <span>Time remaining: {{timeRemaing}}</span> -->
        <!-- <select ng-model='firstPlayer' ng-options='player.name for player in players'></select> -->
+       <span>{{roomInfo.p1Name}}</span>
+       <span>{{roomInfo.p2Name}}</span>
+       <span>{{roomInfo.player1Id}}</span>
+       <span>{{roomInfo.player2Id}}</span>
        <button ng-if="enableBoard" class="new-game btn btn-sm btn-primary" ng-show="showNewGame && !spectating" ng-click='newGame()' />New Game</button>
        </div>
        <span ng-if="gameStatus">{{ gameStatus }}</span>
        <br>
-       <span ng-show="roomInfo.player1 != user.id && roomInfo.player2 != user.id">
+       <span ng-show="roomInfo.player1Id != user.id && roomInfo.player2Id != user.id">
           <button ng-hide="spectating" class="btn-primary btn join-room" ng-click="spec()">Spectate</button>
        </span>
-       <button class="btn-primary btn join-room" ng-hide="spectating || playerNumber || playerNumber == 0 || (roomInfo.player1 != user.id && roomInfo.player2 != user.id && roomInfo.player1 != null && roomInfo.player2 != null)" ng-click="joinGame()">Join room</button>
+       <button class="btn-primary btn join-room" ng-hide="spectating || playerNumber || playerNumber == 0 || (roomInfo.player1Id != user.id && roomInfo.player2Id != user.id && roomInfo.player1Id != null && roomInfo.player2Id != null)" ng-click="joinGame()">Join room</button>
    </div>
        <div ng-show="messages && !spectating" class="fixed-message"><span>{{messages}}</span></div>
        <div class="fixed-message" ng-show="askNew && !spectating && enableBoard">
