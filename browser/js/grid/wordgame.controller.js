@@ -294,6 +294,7 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
 
     $scope.processClick = function(cell) {
+        if ($scope.spectating) return;
         Socket.emit('selected', { x: cell.x, y: cell.y})
         $scope.selectedCell = cell
         GameFactory.setSteal(cell.word)
