@@ -22,6 +22,8 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
     $scope.gameEnd = false
 
+    $scope.otherCell = undefined
+
     $scope.submit = WordFactory.submitWord;
 
     $scope.pot = [];
@@ -115,6 +117,7 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
         Socket.on('claimEndC', function(spotData) {
             $scope.gameEnd = true
             $scope.yourTurn = true
+            $scope.otherCell = undefined
             $scope.messages = 'You have lost'
             updateBoard(spotData)
             $scope.$digest()
@@ -122,6 +125,12 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
         Socket.on('passedTurnC', function() {
             $scope.yourTurn = true
+            $scope.$digest()
+        })
+
+        Socket.on('selectedC', function(cell) {
+            console.log('it happened')
+            $scope.otherCell = $scope.getCell(cell.x, cell.y)
             $scope.$digest()
         })
     })
@@ -214,7 +223,6 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
     };
 
-
     $scope.spec = function() {
         $scope.enableBoard = true
         $scope.spectating = true
@@ -285,6 +293,8 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
 
     $scope.processClick = function(cell) {
+        if ($scope.spectating) return;
+        Socket.emit('selected', { x: cell.x, y: cell.y})
         $scope.selectedCell = cell
         GameFactory.setSteal(cell.word)
     }
