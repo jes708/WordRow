@@ -54,7 +54,6 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
         }
 
         Socket.on('boardData', function(data) {
-            console.log('boardData', data)
             if (data.length === 0) return;
             data.forEach(function(move) {
                 if (move.redraw) {
@@ -68,7 +67,6 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
                 } else {
                     updateBoard(move)
                 }
-                console.log('updating board')
             })
             let lastPlayer = data[data.length - 1].playerNum
             if (lastPlayer === $scope.playerNumber) {
@@ -266,9 +264,7 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
     }
 
     $scope.redraw = function() {
-        if ($scope.redrawsRemaining) {
-            $scope.redrawsRemaining--
-                console.log($scope.redrawsRemaining);
+        if ($scope.yourTurn) {
             $scope.pot = [];
             WordFactory.createPot($scope.pot);
             Socket.emit('redraw', $scope.playerNumber)
@@ -276,7 +272,16 @@ app.controller("WordGameController", function($state, $stateParams, UserFactory,
                 playerNum: $scope.playerNumber,
                 pot: $scope.pot
             })
+
+            if ($scope.redrawsRemaining <= 0) {
+                Socket.emit('passedTurn');
+                $scope.yourTurn = false;
+                // $scope.$digest();
+            } else if ($scope.redrawsRemaining > 0) {
+                $scope.redrawsRemaining--
+            }
         }
+        
     };
 
 
