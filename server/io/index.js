@@ -86,6 +86,10 @@ module.exports = function(server) {
             socket.broadcast.to(roomName).emit('reqNewGameC')
         })
 
+        socket.on('selected', function(cell){
+          socket.broadcast.to(roomName).emit('selectedC', cell)
+        })
+
         socket.on('disconnect', function() {
             console.log('A client has disconnected :(');
             console.log(socket.id);
