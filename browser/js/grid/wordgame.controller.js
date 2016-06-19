@@ -40,13 +40,10 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
         $scope.roomName = location()
 
-        if($scope.roomName === '') {
-            history.go(0)
-        }
-
         roomFactory.getRoom($scope.roomName)
             .then(function(roomInfo) {
                 $scope.roomInfo = roomInfo
+                console.log(roomInfo)
             })
 
         Socket.emit('joinRoom', $scope.roomName)
