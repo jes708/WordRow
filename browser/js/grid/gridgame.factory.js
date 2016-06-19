@@ -1,11 +1,10 @@
 app.factory('GridGameFactory', function(){
-  return {
-
+  var GridGameFactory = {}
     /* A single game board cell object
        x: X location in grid
        y: Y location in grid
        player: the player or players who own or occupy this cell */
-    Cell: function(x,y,player){
+    GridGameFactory.Cell = function(x,y,player){
       this.x      = x
       this.y      = y
       this.player = player
@@ -63,7 +62,7 @@ app.factory('GridGameFactory', function(){
     },
 
     /* Direction Vectors for moving around the grid */
-    Directions: function(){
+    GridGameFactory.Directions = function(){
        return {
            n: { x: -1, y: 0 },
           ne: { x: -1, y: 1 },
@@ -83,7 +82,7 @@ app.factory('GridGameFactory', function(){
        element: the element that will contain the game board
        attrs:   attributes
        controller: The controller for the game board */
-    GameBoard: function(scope, element, attrs, controller){
+    GridGameFactory.GameBoard = function(scope, element, attrs, controller){
       scope.boardWidth   = attrs.cols;
       scope.boardHeight  = attrs.rows;
       scope.gameBoard    = scope.gameBoard || {}
@@ -92,7 +91,7 @@ app.factory('GridGameFactory', function(){
       for(var x=0; x < attrs.cols; x++){
         scope.gameBoard.rows[x] = new Array();
         for(var y=0; y < attrs.rows; y++){
-          scope.gameBoard.rows[x][y] = new GridGameHelp.Cell(x,y,undefined);
+          scope.gameBoard.rows[x][y] = new GridGameFactory.Cell(x,y,undefined);
         }
         y = 0;
       }
@@ -104,7 +103,7 @@ app.factory('GridGameFactory', function(){
        name: a label
        html: html code representation
        icon: image or character */
-    Piece: function(name, html, icon, moves){
+    GridGameFactory.Piece = function(name, html, icon, moves){
         this.name = name
         this.icon = icon
         this.html = html
@@ -117,7 +116,7 @@ app.factory('GridGameFactory', function(){
        name: The name of the player
        token: a simple identifier
        next:  we can cycle the players in any order */
-    Player: function(id,name,token,next){
+    GridGameFactory.Player = function(id,name,token,next){
       this.id    = id
       this.name  = name
       this.token = token
@@ -132,7 +131,7 @@ app.factory('GridGameFactory', function(){
     /*Set up the default scope values and behaviors
       for a Game Board Controller
       scope: a scope object */
-    ScopeDecorator: function(scope){
+    GridGameFactory.ScopeDecorator = function(scope){
       scope.gameBoard      = new Object();
       scope.gameBoard.rows = new Array();
       scope.boardWidth     = 8
@@ -142,8 +141,8 @@ app.factory('GridGameFactory', function(){
       scope.activeCell   = undefined
 
       scope.players      = [
-        new GridGameHelp.Player(0,'Player 1','p1',1),
-        new GridGameHelp.Player(1,'Player 2','p2',0)
+        new GridGameFactory.Player(0,'Player 1','p1',1),
+        new GridGameFactory.Player(1,'Player 2','p2',0)
       ]
 
       scope.activePlayerId = 0
@@ -212,7 +211,7 @@ app.factory('GridGameFactory', function(){
 
     //TODO: move this to separate template file
     // The basic board game html template
-    Template: function(){
+    GridGameFactory.Template = function(){
       var tpl ="<div ng-repeat='row in gameBoard.rows' class='gameRow'>"
           +"      <div ng-repeat='cell in gameBoard.rows[$index]' ng-class='cell.statusToken()' class='gameCell' ng-click='processClick(cell)'>"
           +"        <div draggable='true' ng-class='cell.token()' class='token'>"
@@ -223,5 +222,5 @@ app.factory('GridGameFactory', function(){
           +"   <div class='clear'/>"
       return tpl;
     }
-  }
-})
+    return GridGameFactory
+  })
