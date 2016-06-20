@@ -1,6 +1,7 @@
 'use strict';
 var db = require('../../db/_db');
 var Room = db.model('room');
+var User = db.model('user');
 var router = require('express').Router();
 
 module.exports = router;
@@ -9,15 +10,19 @@ router.get('/:roomName', function(req, res, next) {
     Room.findOrCreate({
         where: {
             room: req.params.roomName
-        }
-        // , 
-        // include: [
-        //   {
-        //     model: User,
-        //     as: player1,
-        //     attributes: ['username']
-        //   }
-        // ]
+        }, 
+        include: [
+          {
+            model: User,
+            as: 'player1',
+            attributes: ['username']
+          },
+          {
+            model: User,
+            as: 'player2',
+            attributes: ['username']
+          }
+        ]
     })
     .then(function(room) {
         room = room[0]

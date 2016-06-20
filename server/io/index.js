@@ -68,8 +68,6 @@ module.exports = function(server) {
 
         socket.on('reqBoardData', function() {
             if (!data[roomName]) data[roomName] = [];
-            console.log('player asked for game data')
-            console.log(data[roomName])
             socket.emit('boardData', data[roomName])
         })
 
