@@ -207,6 +207,12 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
         }
         $scope.messages = undefined
         $scope.gameEnd = false;
+        $scope.pot = [];
+        WordFactory.createPot($scope.pot)
+        Socket.emit('pot', {
+                playerNum: $scope.playerNumber,
+                pot: $scope.pot
+            })
     }
 
     $scope.newGame = function() {
@@ -246,7 +252,12 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
 
     let startGame = function() {
         $scope.enableBoard = true;
+        $scope.pot = [];
         WordFactory.createPot($scope.pot);
+        Socket.emit('pot', {
+            playerNum: $scope.playerNumber,
+            pot: $scope.pot
+        })
     }
 
     $scope.joinGame = function() {
