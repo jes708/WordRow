@@ -67,6 +67,7 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
         }
 
         Socket.on('boardData', function(data) {
+            if(data.length === 0) return;
             data.forEach(function(move) {
                 if (move.redraw) {
                     if (move.playerNum === $scope.playerNumber) {

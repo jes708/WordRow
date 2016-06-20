@@ -25,6 +25,8 @@ span {
 
 .new-game {
   float:right;
+  position: relative;
+  bottom: 17px;
 }
 
 @mixin clearfix {
@@ -156,13 +158,10 @@ button:focus {
   outline: 0;
 }
 
-.game-bottom {
-    position: relative;
-    bottom: 20px;
-}
-
 .game-bottom-left {
   float: left;
+  position: relative;
+  bottom: 45px;
 
   p {
     font-family: 'oxygen';

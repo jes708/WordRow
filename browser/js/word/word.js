@@ -131,14 +131,17 @@ app.factory('WordFactory', function ($http) {
 
     while (stealLetters.length) {
       if (stealLetters[0] === wordLetters[i]) {
+        console.log("stealLetters", stealLetters)
+        console.log("wordLettersi", wordLetters)
         stealLetters.shift();
-        wordLetters.shift();
+        wordLetters.splice(i, 1);
       } else {
         i++
       }
     }
 
     while (wordLetters.length) {
+      console.log("final wordLetters", wordLetters)
       pot.splice(pot.indexOf(wordLetters.shift()),1);
     }
 
