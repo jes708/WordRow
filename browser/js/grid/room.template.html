@@ -10,13 +10,16 @@
       <div class="game-bottom-left" ng-if="enableBoard && !spectating">
        <div class="{{player.token}}Token indicator"></div>
        <span>{{user.username}}</span>
+       <br>
+       <div ng-show="enemy" class="{{enemyToken}}Token indicator"></div>
+       <span ng-show="enemy">{{enemy}}</span>
        <p class="center" ng-if="yourTurn">Your turn</p>
        <p class="center" ng-if="!yourTurn">Waiting for your oppenent...</p>
       </div>
        <!-- <span>Time remaining: {{timeRemaing}}</span> -->
        <!-- <select ng-model='firstPlayer' ng-options='player.name for player in players'></select> -->
 
-       
+
        <span></span>
        <button ng-if="enableBoard" class="new-game btn btn-sm btn-primary" ng-show="showNewGame && !spectating" ng-click='newGame()' />New Game</button>
        </div>

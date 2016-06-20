@@ -26,16 +26,18 @@ module.exports = function(server) {
         socket.on('joinRoom', function(room) {
             roomName = room;
             socket.join(roomName);
-            // if (!data[roomName]) {
-            //   data[roomName] = [];
-            // } else {
-            //   socket.emit('board', data[roomName]);
-            // }
-            // console.log('above is room sharing data if we decide to save')
             io.sockets.in(roomName).emit('roomData', {
                 count: io.sockets.adapter.rooms[roomName]
             })
         });
+
+        socket.on('reqEnemyName', function(){
+          socket.broadcast.to(roomName).emit('reqEnemyNameC')
+        })
+
+        socket.on('sendingName', function(name){
+          socket.broadcast.to(roomName).emit('sendingNameC', name)
+        })
 
         socket.on('redraw', function(playerNum) {
             data[roomName].push({
