@@ -237,6 +237,14 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
     }
 
     $scope.joinGame = function() {
+        if (!$scope.user) {
+            $scope.messages = "You must be logged in to play!"
+            setTimeout(function() {
+                        $scope.messages = undefined
+                        $scope.showNewGame = true
+                        $scope.$digest()
+                    }, 5000)
+        }
         roomFactory.whichPlayer($scope.roomName)
             .then(function(data) {
                 if (data === 'room is full') {
