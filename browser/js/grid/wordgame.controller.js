@@ -1,4 +1,4 @@
-app.controller("WordGameController", function(GridGameFactory,$state, $stateParams, UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
+app.controller("WordGameController", function(GridGameFactory, $state, $stateParams, UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
     GridGameFactory.ScopeDecorator($scope);
 
     UserFactory.getId()
@@ -24,6 +24,8 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
     $scope.otherCell = undefined
 
+    $scope.enemy = undefined
+
     $scope.submit = WordFactory.submitWord;
 
     $scope.pot = [];
@@ -31,7 +33,7 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
     $scope.createPot = WordFactory.createPot
 
     Socket.on('connect', function() {
-        let location = function () {
+        let location = function() {
             let location = window.location.pathname
             if (location === '/') {
                 return 'root'
@@ -120,7 +122,7 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
             $scope.gameEnd = true
             $scope.yourTurn = true
             $scope.otherCell = undefined
-            $scope.messages = 'You have lost'
+            $scope.messages = spotData.winner + 'wins!'
             updateBoard(spotData)
             $scope.$digest()
         })
@@ -135,9 +137,19 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
             $scope.otherCell = $scope.getCell(cell.x, cell.y)
             $scope.$digest()
         })
+
+        Socket.on('reqEnemyNameC', function(){
+            if (!$scope.user.username || $scope.spectating) return;
+            Socket.emit('sendingName', $scope.user.username)
+        })
+
+        Socket.on('sendingNameC', function(name){
+            $scope.enemy = name
+            $scope.$digest()
+        })
     })
 
-    let chkLine = function (a, b, c, d) {
+    let chkLine = function(a, b, c, d) {
         // Check first cell non-zero and all cells match
         return ((a.player) && (a.player === b.player) && (a.player === c.player) && (a.player === d.player));
     }
@@ -250,6 +262,7 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
                     startGame()
                     $scope.playerNumber = 0
                     $scope.player = $scope.players[$scope.playerNumber]
+                    $scope.enemyToken = 'p2'
                     $scope.roomInfo.player1Id = $scope.user.id;
                     $scope.roomInfo.player1 = $scope.user;
                     $scope.roomInfo.player1.username = $scope.user.username;
@@ -259,6 +272,7 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
                     startGame()
                     $scope.playerNumber = 1
                     $scope.player = $scope.players[$scope.playerNumber]
+                    $scope.enemyToken = 'p1'
                     $scope.roomInfo.player2Id = $scope.user.id;
                     $scope.roomInfo.player2 = $scope.user;
                     $scope.roomInfo.player2.username = $scope.user.username;
@@ -284,7 +298,8 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
                 playerNum: $scope.playerNumber,
                 x: $scope.selectedCell.x,
                 y: $scope.selectedCell.y,
-                word: winningWord
+                word: winningWord,
+                winner: $scope.user.username
             })
         } else {
             Socket.emit('claim', {
@@ -300,7 +315,10 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
 
     $scope.processClick = function(cell) {
         if ($scope.spectating) return;
-        Socket.emit('selected', { x: cell.x, y: cell.y})
+        Socket.emit('selected', { x: cell.x, y: cell.y })
+        if(!$scope.enemy) {
+            Socket.emit('reqEnemyName')
+        }
         $scope.selectedCell = cell
         GameFactory.setSteal(cell.word)
     }
