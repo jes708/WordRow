@@ -9,12 +9,5 @@ module.exports = function(db) {
             type: Sequelize.STRING,
             allowNull: false
         }
-        // ,
-        // player1: {
-        //     type: Sequelize.INTEGER
-        // },
-        // player2: {
-        //   type: Sequelize.INTEGER
-        // }
     });
 };

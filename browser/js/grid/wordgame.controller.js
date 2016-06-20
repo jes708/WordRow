@@ -45,7 +45,6 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
         roomFactory.getRoom($scope.roomName)
             .then(function(roomInfo) {
                 $scope.roomInfo = roomInfo
-                console.log(roomInfo)
             })
 
         Socket.emit('joinRoom', $scope.roomName)
@@ -85,6 +84,8 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
             } else {
                 $scope.yourTurn = true
             }
+            $scope.p1un = $scope.roomInfo.player1.username;
+            $scope.p2un = $scope.roomInfo.player2.username;
             $scope.$digest()
         })
 
@@ -238,7 +239,6 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
     $scope.joinGame = function() {
         roomFactory.whichPlayer($scope.roomName)
             .then(function(data) {
-                console.log("Look at the data", data);
                 if (data === 'room is full') {
                     $scope.messages = 'room is full'
                     setTimeout(function() {
@@ -251,7 +251,8 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
                     $scope.playerNumber = 0
                     $scope.player = $scope.players[$scope.playerNumber]
                     $scope.roomInfo.player1Id = $scope.user.id;
-                    $scope.roomInfo.p1Name = $scope.user.username;
+                    $scope.roomInfo.player1 = $scope.user;
+                    $scope.roomInfo.player1.username = $scope.user.username;
                     $scope.yourTurn = true
                     Socket.emit('reqBoardData')
                 } else if (data === 'Player 2') {
@@ -259,7 +260,8 @@ app.controller("WordGameController", function(GridGameFactory,$state, $statePara
                     $scope.playerNumber = 1
                     $scope.player = $scope.players[$scope.playerNumber]
                     $scope.roomInfo.player2Id = $scope.user.id;
-                    $scope.roomInfo.p2Name = $scope.user.username;
+                    $scope.roomInfo.player2 = $scope.user;
+                    $scope.roomInfo.player2.username = $scope.user.username;
                     Socket.emit('reqBoardData')
                 }
             })

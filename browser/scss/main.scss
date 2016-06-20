@@ -98,6 +98,14 @@ div.submitter {
     margin-right: 25px;
 }
 
+.indicator {
+    width: 18px;
+    height: 18px;
+    border: rgba(255, 255, 255, 0.64) 1px solid;
+    float: left;
+    margin-right: 5px;
+}
+
 .fixed-message {
     position: fixed;
     top: 50%;
@@ -145,6 +153,19 @@ div.submitter {
 
 button:focus {
   outline: 0;
+}
+
+.game-bottom {
+    position: relative;
+    bottom: 20px;
+}
+
+.game-bottom-left {
+  float: left;
+
+  p {
+    font-family: 'oxygen';
+  }
 }
 
 @import 'directives/main';

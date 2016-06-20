@@ -1,19 +1,23 @@
    <div class='gameContainer'>
-       <div ng-show="enableBoard" ng-game-board cols='4' rows='4' ng-model='gameBoard'></div>
+      <!-- <h1><span class="p1Token">{{p1un}}</span> vs <span class="p2Token">{{p2un}}</span></h1> -->
+      <div ng-show="enableBoard" ng-game-board cols='4' rows='4' ng-model='gameBoard'></div>
        <!--     <ul>
        <li ng-repeat='player in players'>
            <span class='{{player.token}}Token'>{{player.name}}</span>
      </li>
     </ul>
 -->    <div class="game-bottom">
-       <span ng-if="yourTurn && enableBoard && !spectating">Your turn</span>
-       <span ng-if="!yourTurn && enableBoard && !spectating">Waiting for your oppenent...</span>
+      <div class="game-bottom-left" ng-if="enableBoard && !spectating">
+       <div class="{{player.token}}Token indicator"></div>
+       <span>{{user.username}}</span>
+       <p class="center" ng-if="yourTurn">Your turn</p>
+       <p class="center" ng-if="!yourTurn">Waiting for your oppenent...</p>
+      </div>
        <!-- <span>Time remaining: {{timeRemaing}}</span> -->
        <!-- <select ng-model='firstPlayer' ng-options='player.name for player in players'></select> -->
-       <span>{{roomInfo.p1Name}}</span>
-       <span>{{roomInfo.p2Name}}</span>
-       <span>{{roomInfo.player1Id}}</span>
-       <span>{{roomInfo.player2Id}}</span>
+
+       
+       <span></span>
        <button ng-if="enableBoard" class="new-game btn btn-sm btn-primary" ng-show="showNewGame && !spectating" ng-click='newGame()' />New Game</button>
        </div>
        <span ng-if="gameStatus">{{ gameStatus }}</span>

@@ -13,7 +13,6 @@ app.directive('wordbox', function(WordFactory, GameFactory){
           WordFactory.submitWord(word)
           .then(function(wordRes) {
             if (wordRes.data) {
-              console.log('word res: ', wordRes.data.word)
               WordFactory.endTurn(pot, word, steal);
               WordFactory.createPot(pot);
               scope.word = '';
