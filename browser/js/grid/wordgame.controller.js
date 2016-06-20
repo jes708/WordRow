@@ -123,7 +123,7 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
             $scope.gameEnd = true
             $scope.yourTurn = true
             $scope.otherCell = undefined
-            $scope.messages = spotData.winner + 'wins!'
+            $scope.messages = spotData.winner + ' wins!'
             updateBoard(spotData)
             $scope.$digest()
         })
