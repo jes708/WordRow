@@ -1,5 +1,4 @@
 app.controller("WordGameController", function(GridGameFactory, $state, $stateParams, UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
-    console.log('wordgamecontroller ran')
     Socket.disconnect();
     Socket.connect();
     GridGameFactory.ScopeDecorator($scope);
@@ -36,7 +35,6 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
     $scope.createPot = WordFactory.createPot
 
     Socket.on('connect', function() {
-        console.log('socket connect ran')
         let location = function() {
             let location = window.location.pathname
             if (location === '/') {
@@ -47,7 +45,6 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
         }
 
         $scope.roomName = location()
-        console.log($scope.roomName)
 
         roomFactory.getRoom($scope.roomName)
             .then(function(roomInfo) {
