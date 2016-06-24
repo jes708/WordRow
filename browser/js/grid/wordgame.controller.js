@@ -1,4 +1,6 @@
 app.controller("WordGameController", function(GridGameFactory, $state, $stateParams, UserFactory, $scope, Socket, GameFactory, roomFactory, WordFactory) {
+    Socket.disconnect();
+    Socket.connect();
     GridGameFactory.ScopeDecorator($scope);
 
     UserFactory.getId()
