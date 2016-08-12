@@ -1,6 +1,6 @@
 # WordRow
 
-Live demo coming soon.
+#[Live Demo](https://word-row.herokuapp.com/)
 
 ### The rules are simple.
 Claim 4 consecutive spaces going across, down, or diagonally to win the game!
