@@ -6,7 +6,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.factory('WordFactory', function ($http) {
+app.factory('WordFactory', function ($http, DictionaryFactory) {
 
   var WordFactory = {};
 
@@ -18,32 +18,26 @@ app.factory('WordFactory', function ($http) {
   var commonConsonants = "bnmsdfghlrtp";
 
   function randLetter() {
-    console.log('randLetter')
     return alphabet[Math.floor(Math.random() * 26)]
   }
 
   function randVowel() {
-    console.log('randVowel')
     return vowels[Math.floor(Math.random() * 5)]
   }
 
   function randConsonant() {
-    console.log('randConsonant')
     return consonants[Math.floor(Math.random() * 21)]
   }
 
   function commonLetter() {
-    console.log('commonLetter')
     return common[Math.floor(Math.random() * 16)]
   }
 
   function commonVowel() {
-    console.log('commonVowel')
     return commonVowels[Math.floor(Math.random() * 4)]
   }
 
   function commonConsonant() {
-    console.log('commonConsonant')
     return commonConsonants[Math.floor(Math.random() * 12)]
   }
 
@@ -60,7 +54,7 @@ app.factory('WordFactory', function ($http) {
   }
 
   WordFactory.submitWord = function(word) {
-    return $http.post('/api/words/', {word: word});
+    if (DictionaryFactory.dictionary.indexOf(word) !== -1) return word;
   };
 
   WordFactory.createPot = function(pot) {
@@ -131,8 +125,6 @@ app.factory('WordFactory', function ($http) {
 
     while (stealLetters.length) {
       if (stealLetters[0] === wordLetters[i]) {
-        console.log("stealLetters", stealLetters)
-        console.log("wordLettersi", wordLetters)
         stealLetters.shift();
         wordLetters.splice(i, 1);
       } else {
@@ -141,7 +133,6 @@ app.factory('WordFactory', function ($http) {
     }
 
     while (wordLetters.length) {
-      console.log("final wordLetters", wordLetters)
       pot.splice(pot.indexOf(wordLetters.shift()),1);
     }
 

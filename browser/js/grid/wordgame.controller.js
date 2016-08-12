@@ -95,7 +95,6 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
             $scope.p1un = $scope.roomInfo.player1.username;
             $scope.p2un = $scope.roomInfo.player2.username;
             $scope.$digest()
-            console.log('i went here')
         })
 
         Socket.on('claimC', function(spotData) {
@@ -140,7 +139,6 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
         })
 
         Socket.on('selectedC', function(cell) {
-            console.log('it happened')
             $scope.otherCell = $scope.getCell(cell.x, cell.y)
             $scope.$digest()
         })
