@@ -139,7 +139,6 @@ app.controller("WordGameController", function(GridGameFactory, $state, $statePar
         })
 
         Socket.on('selectedC', function(cell) {
-            console.log('it happened')
             $scope.otherCell = $scope.getCell(cell.x, cell.y)
             $scope.$digest()
         })

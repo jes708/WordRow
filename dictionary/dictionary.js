@@ -1,3 +1,4 @@
+(function() {
 var app = angular.module('dictionary', []);
 
     app.factory("DictionaryFactory", function() {
@@ -9,3 +10,4 @@ var app = angular.module('dictionary', []);
       return DictionaryFactory;
 
 });
+})();
